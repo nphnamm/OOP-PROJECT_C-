@@ -1,13 +1,14 @@
-#include <iostream>
-#include<string>
-#include<stdlib.h>
-#include<ctime>
-#include<stdbool.h>
-#include <iomanip>
-#include<fstream>
-#include<stdio.h>
-#include<conio.h>
-using namespace std;
+	#include <iostream>
+	#include<string>
+	#include<stdlib.h>
+	#include<ctime>
+	#include<stdbool.h>
+	#include <iomanip>
+	#include<fstream>
+	#include<stdio.h>
+	#include<conio.h>
+	#include<vector>
+	using namespace std;
 
 
 class Customer;
@@ -22,7 +23,7 @@ class RoomService;
 
 
 
-class Room
+class Room 
 {
 public:
 	string roomType;
@@ -42,7 +43,7 @@ public:
 		this->roomNo = roomNo;
 		this->dsphong = dsphong;
 		this->status = 0;
-		
+		this->sp = 0;
 
 	}
 	void setRoom()
@@ -59,17 +60,7 @@ public:
 
 	Room()
 	{
-	}
 
-
-
-
-	bool isVacant(Room r)
-	{
-		if (r.status == 1)
-			return false;
-		else
-			return true;
 	}
 
 	void displayDetail()
@@ -79,10 +70,7 @@ public:
 		cout << "Number of Beds :: " << this->noOfBeds << endl;
 		cout << "Rent :: " << this->rent << endl;
 		cout << "Room Number ::" << this->roomNo << endl;
-		if (status == 1)
-			cout << " Occupied \n";
-		else
-			cout << "Vacant \n";
+		
 	}
 
 	void vacateRoom(int rno)
@@ -104,6 +92,11 @@ public:
 				r[i].displayDetail();
 		}
 	}
+	
+	int getsp() {
+		return this->sp;
+	}
+	
 
 };
 
@@ -132,17 +125,18 @@ public:
 
 
 
-class Customer
+class Customer :public Room
 {
 public:
 	string custName;
 	string custAddress;
-	int custID=100;
+	int custID;
 	string custPhone;
 	string custEmail;
 	string checkInTime;
-	int status=0;
-	
+	int sp;
+	static int id;
+	string CheckOutTime;
 
 public:
 	Customer()
@@ -154,7 +148,7 @@ public:
 		this->custPhone = " ";
 		this->custEmail = " ";
 		this->checkInTime = dt;
-		
+		this->custID = id++;
 		
 	}
 
@@ -183,6 +177,9 @@ public:
 	virtual void printCustomer()
 	{
 		
+		time_t now = time(0);
+		string dt = ctime(&now);
+		this->CheckOutTime = dt;
 		cout << "ID :: " << custID << endl;
 
 		cout << "Name :: " << custName << endl;
@@ -193,8 +190,9 @@ public:
 	
 		cout << "Email :: " << custEmail << endl;
 		
-		cout << "Check-In Time ::" << checkInTime << endl;
+		cout << "Check-In Time ::" << checkInTime ;
 
+		cout << "Check Out Time ::" << CheckOutTime;
 	}
 	virtual float viewTotalBill() {
 		return 0;
@@ -205,20 +203,26 @@ public:
 	}
 	virtual void checkout() {
 	}
+	virtual int getsp() {
+		return 0;
+	}
+	
 };
+int Customer::id = 100;
 
 class RoomCustomer : public Customer
 {
 public:
-	double rbill;
+	double bill;
 	Room r;
 	int bookStatus;
+	
 public:
 
 	float viewTotalbill()
 	{
-		cout << "Bill =" << rbill;
-		return rbill;
+		cout << "Bill =" << bill;
+		return bill;
 	}
 
 	void allocateRoom(Room r1)
@@ -238,34 +242,38 @@ public:
 	}
 	float viewTotalBill()
 	{
-		this->rbill = r.rent;
-		cout << "Bill :: " << this->rbill << endl;
-		return rbill;
+		this->bill = r.rent ;
+		cout << "Bill :: " << this->bill;
+		return bill;
 	}
 	void checkOut()
 	{
-		cout << "Your bill is " << this->rbill << "/-" << endl;
-		this->rbill = 0;
+		cout << "Your bill is " << this->bill << "/-" << endl;
+		this->bill = 0;
 		this->r.status = 0;
 		cout << "Thank You! Visit Again.\n" << endl;
+	}
+	int getsp() {
+		return this->r.sp;
+	
 	}
 
 
 };
 
 
-class RestaurantCustomer :public Customer,public RoomCustomer
+class RestaurantCustomer :public Customer 
 {
 public:
-	double dbill;
+	double bill;
 	Dish d;
 	int orderStatus;
 public:
 
 	float viewTotalbill()
 	{
-		cout << "Bill =" << dbill;
-		return dbill;
+		cout << "Bill =" << bill;
+		return bill;
 	}
 
 	void allocateDish(Dish d1)
@@ -276,9 +284,19 @@ public:
 	float viewTotalBill()
 	{
 		
-		this->dbill = d.price+rbill ;
-		cout << "Bill :: " << this->dbill << endl;
-		return this->dbill;
+		this->bill = d.price ;
+		cout << "Bill :: " << this->bill << endl;
+		return this->bill;
+	}
+	void printCustomer()
+	{
+
+		Customer::printCustomer();
+
+		cout << "Dish Name  :: " << d.dishName << endl;
+		cout << "Dish Type :: " << d.dishType << endl;
+		cout << "Price::" << d.price << endl;
+
 	}
 
 };
@@ -309,35 +327,7 @@ public:
 
 };
 
-class Waiter :public Employee
-{
-public:
-	void performDuty()
-	{
 
-		cout << "\n\nEmployee ABC arriving at your table to take your Order\n\n";
-
-	}
-	virtual ~Waiter() {
-	}
-};
-
-class SelectEmployee {
-	//protected:
-	Employee* e;
-
-public:
-	SelectEmployee(Employee* e1)
-	{
-		e = e1;
-	}
-
-	void performDuty()
-	{
-		e->performDuty();
-	}
-
-};
 
 class Restaurant
 {
@@ -352,9 +342,21 @@ public:
 		cout << " Dish Name :: " << d.dishName << endl;
 		cout << " Price :: " << d.price << endl;
 		cout << " Dish Type :: " << d.dishType;
-
+	
 	}
+	Dish getDish(string dnam)
+	{
+		int i;
+		for (i = 0; i < 8; i++)
+		{
 
+			if (dish[i].stt == dnam)
+
+			{
+				return dish[i];
+			}
+		}
+	}
 	void displayMenu()
 	{
 		int i;
@@ -379,7 +381,9 @@ public:
 	Employee* employee[5];
 	Restaurant restuarant;
 	Room room[6];
-	Customer* customer[5];
+	string acc = "nam";
+	string pass = "123";
+	
 
 private:
 
@@ -420,6 +424,15 @@ public:
 				return room[i];
 		}
 	}
+	Dish getDish(string dsh)
+	{
+		int i;
+		for (i = 0; i < 8; i++)
+		{
+			if (restuarant.dish[i].stt == dsh)
+				return restuarant.dish[i];
+		}
+	}
 	void displayAvailble() {
 		int i;
 		cout << "\n\n----------------------------------------------Room Details----------------------------------------------\n\n";
@@ -458,25 +471,87 @@ public:
 	{
 		int i;
 		for (i = 0; i < 6; i++)
-		{	
+		{
 			int sphong;
-			if (room[i].roomNo == r)
-				cout << "\nNhap so phong: ";
-				cin >> sphong;
-			if (r == 1) {
+			if (room[i].roomNo == r) {
 				
-				if (sphong < 200 & sphong >= 100) {
+				 if (r == 1) {
+					cout << "\nNhap so phong 100-200: ";
+					cin >> sphong;
+					while (sphong > 200 || sphong <= 100) {
+
+
+						cout << "\nVui long nhap lai so phong:\n";
+						cin >> sphong;
+					}
+				
+					room[i].sp = sphong;
+				}
+				 if (r == 2) {
+					cout << "\nNhap so phong 200-300: ";
+					cin >> sphong;
+					while (sphong > 300 || sphong <= 200) {
+						cout << "\nVui long nhap lai so phong:\n";
+						cin >> sphong;
+					}
+					room[i].sp = sphong;	
+				}
+				 if (r == 3) {
+					cout << "\nNhap so phong 300-400: ";
+					cin >> sphong;
+					while (sphong > 400 || sphong <= 300) {
+						cout << "\nVui long nhap lai so phong:\n";
+						cin >> sphong;
+					}		
+					room[i].sp = sphong;
+				}
+				if (r == 4) {
+					cout << "\nNhap so phong 400-500: ";
+					cin >> sphong;
+					while (sphong > 500 || sphong <= 400) {
+						cout << "\nVui long nhap lai so phong:\n";
+						cin >> sphong;
+					}
+					room[i].sp = sphong;
+				
+				}
+				if (r == 5) {
+					cout << "\nNhap so phong 500-600: ";
+					cin >> sphong;
+					while (sphong > 600 || sphong <= 500) {
+
+
+						cout << "\nVui long nhap lai so phong:\n";
+						cin >> sphong;
+					}
 					cout << "\nDat Phong Thanh Cong";
 					room[i].sp = sphong;
-					break;
+					
 				}
-				else {
-					cout << "\nvui long nhap dung so phong\n";
+				cout << "\nVui Long Nhap So Ngay Ban O ";
+				int sn;
+				cin >> sn;
+				while (sn < 1) {
+					cout << "\nVui Long Nhap Lai";;
+					cin >> sn;
+				}
+				room[i].rent=room[i].rent*sn;
+				cout << "\nDat Phong Thanh Cong";
+				break;
+			}
+			else if ((room[i].roomNo != r)) {
+				while (r >= 6 || r < 1)
+				{
+					cout << "\nVui Long Nhap Lai :";
+					cin >> r;
 				}
 			}
+			
+			
 		}
+		
 	}
-
+	
 
 	void askFeedback()
 	{
@@ -510,7 +585,6 @@ public:
 		int i, j = 0;
 		for (i = 0; i < 6; i++)
 		{
-
 			if (room[i].roomNo == rno)
 			{
 				j = 1;
@@ -520,7 +594,6 @@ public:
 		}
 		if (j == 0)
 			cout << "Sorry! Room Not Found, or occupied at the moment\n";
-
 	}
 	void takeOrder(string dnm)
 	{
@@ -531,10 +604,7 @@ public:
 			{
 				j = 1;
 				cout << "Order Successful\n" << endl;
-				
-				
 			}
-			
 			
 		}
 		if (j == 0)
@@ -551,8 +621,7 @@ void pressanykey() {
 	getch();
 	system("cls");
 }
-int main()
-{
+void Menu() {
 	int check = 0;
 
 
@@ -567,12 +636,12 @@ int main()
 	//}
 
 	cout << "\n";
-	int ch, i, o, ch1, ch2, r, rno, rcount = 0, dcount = 0;
+	int ch, i =0, o, ch1, ch2, r, rno, rcount = 0, dcount = 0;
 	Room r2;
-	string dname;
+	string dname, tk, mk;
 	Dish d2;
 	Hotel* ht = ht->getHotel();
-
+	vector<Customer*> ds_customer;
 	Dish d[8] = {
 		Dish("1","Chocolate Fondue",140,"Desert"),
 		Dish("2","Manchow Soup",110,"Soup"),
@@ -584,7 +653,7 @@ int main()
 		Dish("8","Raspberry Ripple",120,"Ice Cream")
 	};
 
-	Customer* c;
+	
 	Restaurant res;
 	for (i = 0; i < 8; i++)
 	{
@@ -598,177 +667,235 @@ int main()
 	   Room("TripBoule Room",3,5000,3,"300-399"),
 	   Room("Double Double Room",2,6000,4,"400-499"),
 	   Room("Vip Room",2,7000,5,"500-599"),
-	   
+
 	};
-	SelectEmployee* e;
+
 	ht->setHotel(res, rm);
-	while (1)
+	cout << "\n\t\t\t\tNhap Tai Khoan: ";
+	getline(cin, tk);
+	cout << "\n\t\t\t\tNhap Mat khau :";
+	getline(cin, mk);
+	while (tk != ht->acc || mk != ht->pass) {
+		system("cls");
+		cout << "\n\t\t\t\tNhap Lai Tai Khoan va Mat Khau";
+		cout << "\n\t\t\t\tNhap Tai Khoan: ";
+		getline(cin, tk);
+		cout << "\n\t\t\t\tNhap Mat khau :";
+		getline(cin, mk);
+	}
+
+	while (true)
 	{
-		for (i = 0; i < 5; i++)
-		{
-			try {
+		
+			
 
 
 				system("cls");
-			level1:	cout << "Enter \n\t\t1. Danh Sach Phong \n\t\t2. Dat Phong \n\t\t3. Don Dep \n\t\t4. Danh Sach Do an  \n\t\t5. Dat Do an \n\t\t6. In Hoa Don  \n\t\t7. Dua Y Kien \n\t\t8. Huy Dat Phong \n\t\t9. Danh Gia \n\t\t10. Xuat Danh Sach \n\t\t11.exit \n\n";
+			level1:	cout << "\t\t\t-----------------------------------------------------------------\n";
+				cout <<"\t\t\t------------CHUONG TRINH QUAN LY KHACH SAN ----------------------\n";
+				cout <<"\t\t\t-	1.Danh Sach Phong Dang Co\t\t\t\t-\n";
+				cout <<"\t\t\t-	2.Dat Phong              \t\t\t\t-\n";
+				cout <<"\t\t\t-	3.Don Phong              \t\t\t\t-\n";
+				cout <<"\t\t\t-	4.Danh Sach Do An        \t\t\t\t-\n";
+				cout <<"\t\t\t-	5.Dat Do An              \t\t\t\t-\n";
+				cout <<"\t\t\t-	6.In Hoa Don             \t\t\t\t-\n";
+				cout <<"\t\t\t-	7.Khong Hai Long         \t\t\t\t-\n";
+				cout <<"\t\t\t-	8.Huy Dat Phong          \t\t\t\t-\n";
+				cout <<"\t\t\t-	9.Give FeedBack          \t\t\t\t-\n";
+				cout <<"\t\t\t-	10.Danh Sach Phong Da Dat\t\t\t\t-\n";
+				cout <<"\t\t\t--------------------Nhap Lua Chon Cua Ban------------------------\n";
 				cin >> ch1;
-				switch (ch1)
+				Customer* customer = new RoomCustomer ;
 				{
-				case 1:
-					system("cls");
-					ht->displayAvailble();
-					system("pause");
-					system("cls");
-					goto level1;
-				case 2:
-					system("cls");
-					ht->customer[i] = new RoomCustomer;
-					cout << "Enter Your details\n";
-					ht->customer[i]->setData();
-					check++;
-					system("cls");
-					
-					ht->displayAvailble();
-					cout << "Enter Room No\n";
-					cin >> rno;
-					ht->bookRoom(rno);
-					r2 = ht->getRoom(rno);
-					ht->customer[i]->allocateRoom(r2);
-					pressanykey();
-					system("cls");
-					goto level1;
-					
-				case 3:
-					if (check == 0)
-					{
-						cout << "\n\n-----------------------------------------------------------------------------------------\n\n";
-						cout << "Cannot vacate a book unless booked\n";
-						cout << "\n\n-----------------------------------------------------------------\n\n";
-					}
-
-					else
-					{
-						ht->customer[i]->status = 0;
-						cout << "Enter Room No\n";
-						cin >> rno;
-						ht->vacateRoom(rno);
-						cout << "Room vacated\n";
-
-					}
-					goto level1;
-				case 4:
-					system("cls");
-					ht->displayMenu();
-					pressanykey();
-					system("cls");
-					goto level1;
-
-				case 5:
-					system("cls");
-					
-					if (check == 0) {
-						cout << "\nVui Long Nhap Thong Tin truoc\n";
-						pressanykey();
+					if (ch1 == 1) {
+						system("cls");
+						ht->displayAvailble();
+						system("pause");
+						system("cls");
 						goto level1;
 					}
-					else {
-						o = 1;
-						rewind(stdin);
-						ht->customer[i] = new RestaurantCustomer;
-						ht->customer[i]->status = 1;
-						ht->displayMenu();
+					else if (ch1==2) {
+						system("cls");
 						
-						cout << "Enter Dish Name you want to Order(Make sure you enter the exact same name.)\n";
-
-						getline(cin, dname);
-						ht->takeOrder(dname);
-
-					
-
-						ht->customer[i]->allocateDish(d2);
-					}
-					pressanykey();
-					system("cls");
-
-					if (o == 0)
-					{
-						cout << "\n\n-----------------------------------------------------------------------------------------\n\n";
-						cout << "No such Dish Found";
-					}
-					goto level1;
-				case 6: if (check == 0)
-				{
-					cout << "\n\n------------------------------------------------------------------------------------------\n\n";
-
-					cout << "Cannot get Invoice Details unless you book a Room\n";
-					cout << "\n\n-----------------------------------------------------------------\n\n";
-					pressanykey();
-					system("cls");
-				}
-
-					  else
-				{
-					system("cls");
-					cout << "\n\n-----------------------------------------------------------------\n\n";
-					ht->customer[i]->printCustomer();
-					ht->customer[i]->viewTotalBill();
-					cout << "\n\n-----------------------------------------------------------------\n\n";
-					pressanykey();
-					system("cls");
-					goto level1;
-				}
-				case 7:
-					if (check == 0)
-
-					{
-						cout << "\n\n--------------------------------------------------------------------------------------------\n\n";
-						cout << "Cannot call Room Service Unless you book a Room\n";
-						cout << "\n\n-----------------------------------------------------------------\n\n";
+						cout << "Enter Your details\n";
+						customer->setData();
+						
+						check++;
+						system("cls");
+						ds_customer.push_back(customer);
+						
+						ht->displayAvailble();
+						cout << "Enter Room No\n";
+						cin >> rno;
+						ht->bookRoom(rno);
+						r2 = ht->getRoom(rno);
+						customer->allocateRoom(r2);
 						pressanykey();
 						system("cls");
+						goto level1;
+					}
+					else if (ch1 ==3) {
+						if (check == 0)
+						{
+							cout << "\n\n-----------------------------------------------------------------------------------------\n\n";
+							cout << "Cannot vacate a book unless booked\n";
+							cout << "\n\n-----------------------------------------------------------------\n\n";
+						}
+
+						else
+						{
+
+							cout << "Enter Room No\n";
+							cin >> rno;
+							for(int i=0;i<ds_customer.size();i++){
+								while (ds_customer[i]->getsp() != rno) {
+									
+									cout << "\nVui Long Nhap Lai";
+									cin >> rno;
+								}
+								cout << "Room vacated\n";
+							
+							}
+							
+	
+						}
+						goto level1;
+					}
+					else if (ch1 == 4) {
+						system("cls");
+						ht->displayMenu();
+						pressanykey();
+						system("cls");
+						goto level1;
 					}
 
-					else
-					{
-						e = new SelectEmployee(new RoomService);
-						e->performDuty();
-						//Rennaisance->employee->performDuty()
+					else if (ch1 == 5) {
+						system("cls");
+
+						if (check == 0) {
+							cout << "\nVui Long Nhap Thong Tin truoc\n";
+							pressanykey();
+							goto level1;
+						}
+						else {
+							o = 1;
+							rewind(stdin);
+							ht->displayMenu();
+							int od;
+						
+							cout << "\nNhap Phong Muon Order ";
+							cin >> od;
+							for (int i = 0; i < ds_customer.size(); i++) {
+								if (ds_customer[i]->getsp() == od) {
+									rewind(stdin);
+									cout << "Enter Dish Name you want to Order(Make sure you enter the exact same name.)\n";
+									getline(cin, dname);
+									ht->takeOrder(dname);
+									d2 = ht->getDish(dname);
+									customer->allocateDish(d2);
+									
+								}
+								
+							
+							}
+							
+						}
+						pressanykey();
+						system("cls");
+
+						if (o == 0)
+						{
+							cout << "\n\n-----------------------------------------------------------------------------------------\n\n";
+							cout << "No such Dish Found";
+						}
+
+						goto level1;
 					}
-					goto level1;
-				case 8: 	if (check == 0)
-				{
-					cout << "\n\n-----------------------------------------------------------------------------------\n\n";
-					cout << "No Room Booked\n";
-					pressanykey();
+					else if (ch1 == 6) {
+						if (check == 0)
+						{
+							cout << "\n\n------------------------------------------------------------------------------------------\n\n";
 
-				}
+							cout << "Cannot get Invoice Details unless you book a Room\n";
+							cout << "\n\n-----------------------------------------------------------------\n\n";
+							pressanykey();
+							system("cls");
+						}
 
-					  else
-				{
+						else
+						{
+							system("cls");
+							cout << "\n\n-----------------------------------------------------------------\n\n";
+							int px;
+							cout << "\nNhap So Phong Can Xuat Hoa Don";
+							cin >> px;
+							
+							for (int i = 0; i < ds_customer.size(); i++)
+							{
+								if(ds_customer[i]->getsp()==px){
+									ds_customer[i]->printCustomer();
+									ds_customer[i]->viewTotalBill();
+									cout << "\n\n-----------------------------------------------------------------\n\n";
+									pressanykey();
+									system("cls");
+									
+								}
+							}
+						
+							goto level1;
+						}
+					}
+					else if (ch1 == 7) {
+						if (check == 0)
 
-					ht->customer[i]->status = 0;
-					cout << "Enter Room No\n";
-					cin >> rno;
-					ht->vacateRoom(rno);
-					cout << "Cancellation Successful!\n";
+						{
+							cout << "\n\n--------------------------------------------------------------------------------------------\n\n";
+							cout << "Cannot call Room Service Unless you book a Room\n";
+							cout << "\n\n-----------------------------------------------------------------\n\n";
+							pressanykey();
+							system("cls");
+						}
 
-				}
-					  goto level1;
-				case 9: if (check == 0)
-				{
-					cout << "\n\n-----------------------------------------------------------------------------------\n\n";
-					cout << "Cannot give feedback unless you order a Dish\n";
-					pressanykey();
+						else
+						{
+							Employee *e = new RoomService;
+							e->performDuty();
+							
+						}
+						goto level1;
+					}
+					else if (ch1 == 8) {
+						if (check == 0)
+						{
+							cout << "\n\n-----------------------------------------------------------------------------------\n\n";
+							cout << "No Room Booked\n";
+							pressanykey();
+						}
+						else
+						{
+							cout << "Enter Room No\n";
+							cin >> rno;
+							ht->vacateRoom(rno);
+							cout << "Cancellation Successful!\n";
 
-				}
-					  else
+						}
+						goto level1;
+					}
+					else if (ch1 == 9) {
+						if (check == 0)
+						{
+							cout << "\n\n-----------------------------------------------------------------------------------\n\n";
+							cout << "Cannot give feedback unless you order a Dish\n";
+							pressanykey();
 
-					ht->askFeedback();
-					goto level1;
-				case 11: return 0;
+						}
+						else
 
-				
-				case 10:
+							ht->askFeedback();
+						goto level1;
+					}
+
+				else if( ch1==10){
 					if (check == 0)
 					{
 						cout << "\n\n-----------------------------------------------------------------------------------\n\n";
@@ -777,30 +904,40 @@ int main()
 
 					}
 					else {
-						for (int i = 0; i < check; i++) {
-							ht->customer[i]->printCustomer();
+						system("cls");
+						cout << "\n\n----------------------------------------------Room List Booked----------------------------------------------\n\n";
+						cout  << "ID" << setw(5) << "Name" << setw(20) << "Address" << setw(20) << "Phone Number" << setw(20) << "Check In Time" << setw(20) <<"Room Type" << setw(20) <<"Room Number "<< setw(15) <<"So Phong\n";
+						for (int i = 0; i < ds_customer.size(); i++) {
 							
+							cout << "\nKhach Hang Thu " << i + 1 <<endl;
 							
+							ds_customer[i]->printCustomer();
+							
+
 						}
 						pressanykey();
 					}
 					goto level1;
 				}
-				
-
-
-
-
-
+				else if (ch1 == 11) {
+				return ;
+				}
+				else {
+				cout << "\nNhap Lai ";
+				}
 
 			}
-			catch (string erro)
+			/*catch (string erro)
 			{
 				erro = "EROR";
-				cout << "----------------------------------------"<<erro<<"------------------------------------------\n\n";
-			}
+				cout << "----------------------------------------" << erro << "------------------------------------------\n\n";
+			}*/
 		}
 	}
-	
+
+int main()
+{
+	Menu();
+	system("pause");
 	return 0;
 }
