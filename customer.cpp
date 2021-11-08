@@ -51,13 +51,14 @@ public:
 
 	}
 	virtual float viewTotalBill() {
-		return 0;
+		
 	}
 	virtual void allocateRoom(Room r1) {
 	}
 	virtual void allocateDish(Dish d1) {
 	}
 	virtual void checkout() {
+		
 	}
 };
 
