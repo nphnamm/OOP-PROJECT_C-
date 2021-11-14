@@ -1,14 +1,17 @@
-	#include <iostream>
-	#include<string>
-	#include<stdlib.h>
-	#include<ctime>
-	#include<stdbool.h>
-	#include <iomanip>
-	#include<fstream>
-	#include<stdio.h>
-	#include<conio.h>
-	#include<vector>
-	using namespace std;
+#include <iostream>
+#include<string>
+#include<stdlib.h>
+#include<ctime>
+#include<stdbool.h>
+#include<iomanip>
+#include<fstream>
+#include<stdio.h>
+#include<conio.h>
+#include<vector>
+#include<time.h>
+#include<windows.h>
+#include <ctype.h>
+using namespace std;
 
 
 class Customer;
@@ -21,9 +24,96 @@ class Hotel;
 class Room;
 class RoomService;
 
+void pressanykey() {
+	printf("\n\nNhan phim bat ki de tiep tuc ...");
+	getch();
+	system("cls");
+}
+struct NODE {
+	RestaurantCustomer* data;
+	NODE* pNext;
+};
+//
+struct LIST {
+	NODE* pHead;
+	NODE* pTail;
 
 
-class Room 
+};
+// KH?i t?o c?u trúc danh sách 
+void KhoiTaoDSLK(LIST*& l) {
+	l = new LIST;
+	l->pHead = NULL;
+	l->pTail = NULL;
+
+
+}
+NODE* KhoiTaoNode(RestaurantCustomer* x) {
+
+	NODE* p = new NODE;
+	if (p == NULL) {
+		cout << " \nkhong du bo nho de cap phat ";
+		return NULL;
+
+	}
+	p->data = x;
+	p->pNext = NULL;
+	return p;
+
+}
+
+void ThemVaoCuoi(LIST*& l, NODE* p) {
+	if (l->pHead == NULL) {
+		l->pHead = l->pTail = p;
+
+	}
+	else {
+
+		l->pTail->pNext = p;
+
+		l->pTail = p;
+
+
+	}
+}
+void XoaDau(LIST* l) {
+	if (l->pHead == NULL) {
+		return;
+	}
+	NODE* p = l->pHead;
+	l->pHead = l->pHead->pNext;
+	delete p;
+
+
+}
+void XoaCuoi(LIST* l) {
+
+	NODE* p;
+	for (NODE* k = l->pHead; k != NULL; k = k->pNext) {
+
+
+		if (k->pNext == l->pTail) {
+			delete l->pTail;
+			k->pNext = NULL;
+			l->pTail = k;
+		}
+	}
+}
+void textcolor(int color) {
+
+
+	HANDLE hConsoleColor;
+	hConsoleColor = GetStdHandle(STD_OUTPUT_HANDLE);
+	CONSOLE_SCREEN_BUFFER_INFO screen_buffer_info;
+	GetConsoleScreenBufferInfo(hConsoleColor, &screen_buffer_info);
+	WORD wAttributes = screen_buffer_info.wAttributes;
+	color &= 0x000f;
+	wAttributes &= 0xfff0; wAttributes |= color;
+	SetConsoleTextAttribute(hConsoleColor, wAttributes);
+
+}
+
+class Room
 {
 public:
 	string roomType;
@@ -35,7 +125,7 @@ public:
 	int status;
 
 public:
-	Room(string roomType, int noOfBeds, double rent, int roomNo,string dsphong)
+	Room(string roomType, int noOfBeds, double rent, int roomNo, string dsphong)
 	{
 		this->roomType = roomType;
 		this->noOfBeds = noOfBeds;
@@ -57,7 +147,6 @@ public:
 		status = 0;
 
 	}
-
 	Room()
 	{
 
@@ -70,7 +159,7 @@ public:
 		cout << "Number of Beds :: " << this->noOfBeds << endl;
 		cout << "Rent :: " << this->rent << endl;
 		cout << "Room Number ::" << this->roomNo << endl;
-		
+
 	}
 
 	void vacateRoom(int rno)
@@ -92,11 +181,11 @@ public:
 				r[i].displayDetail();
 		}
 	}
-	
+
 	int getsp() {
 		return this->sp;
 	}
-	
+
 
 };
 
@@ -107,15 +196,15 @@ public:
 	double price;
 	string dishType;
 	string stt;
-	
+
 public:
-	Dish( string stt ,string dishName, double price, string dishType)
+	Dish(string stt, string dishName, double price, string dishType)
 	{
 		this->stt = stt;
 		this->dishName = dishName;
 		this->price = price;
 		this->dishType = dishType;
-		
+
 	}
 	Dish()
 	{
@@ -127,76 +216,119 @@ public:
 
 class Customer :public Room
 {
-public:
+private:
 	string custName;
 	string custAddress;
 	int custID;
 	string custPhone;
-	string custEmail;
+	string custCMND;
 	string checkInTime;
-	int sp;
 	static int id;
 	string CheckOutTime;
 
 public:
+	int getCustID() {
+		return custID;
+	}
+	string getcustname() {
+		return custName;
+
+	}
+	string getcustAddress() {
+		return custAddress;
+		
+	}
+	string getcustPhone() {
+		return custPhone;
+	}
+	string getcustCMND() {
+		return custCMND;
+
+	}
+	string getcit() {
+		return checkInTime;
+
+	}
+	string getcot() {
+		return CheckOutTime;
+
+	}
+	void setCustID(int id) {
+		custID == id;
+
+	}
+	void setCname(string newname) {
+		custName== newname;
+
+	}
+	void setAddress(string add) {
+		custAddress == add;
+
+	}
+	void setphone(string phone) {
+		custPhone = phone;
+	}
+	void setCMND(string CMND) {
+		custCMND=CMND;
+	}
 	Customer()
 	{
 		time_t c = time(0);
-		char *dt = ctime(&c);
+		string dt = ctime(&c);
 		this->custName = " ";
 		this->custAddress = " ";
 		this->custPhone = " ";
-		this->custEmail = " ";
+		this->custCMND = " ";
 		this->checkInTime = dt;
 		this->custID = id++;
-		
+
 	}
 
 	void setData()
 	{
+
 		time_t now = time(0);
 		string dt = ctime(&now);
 		this->checkInTime = dt;
+
 		rewind(stdin);
-		cout << "\nEnter Name:";
+		cout << "\nNhap Ten:";
 		getline(cin, custName);
 		rewind(stdin);
-		cout << "\nEnter your Address :";
+		cout << "\nNhap Dia Chi :";
 		getline(cin, custAddress);
 		rewind(stdin);
-		cout << "\nEnter your Phone number :";
+		cout << "\nNhap So Dien Thoat :";
 		getline(cin, custPhone);
-		cout << "\nEnter your Email : ";
-		getline(cin, custEmail);
-		custID++;
+		cout << "\nNhap So Chung Minh Nhan Dan : ";
+		getline(cin, custCMND);
+		this->custID;
 	}
-
-
-
-
 	virtual void printCustomer()
 	{
-		
+
 		time_t now = time(0);
 		string dt = ctime(&now);
 		this->CheckOutTime = dt;
+	
 		cout << "ID :: " << custID << endl;
 
-		cout << "Name :: " << custName << endl;
-		
-		cout << "Address :: " << custAddress << endl;
-		
-		cout << "Phone Number :: " << custPhone << endl;
-	
-		cout << "Email :: " << custEmail << endl;
-		
-		cout << "Check-In Time ::" << checkInTime ;
+		cout << "Ho Va Ten :: " << custName << endl;
 
-		cout << "Check Out Time ::" << CheckOutTime;
+		cout << "Dia Chi :: " << custAddress << endl;
+
+		cout << "So Dien Thoai :: " << custPhone << endl;
+
+		cout << "CMND :: " << custCMND << endl;
+
+		cout << "Gio Vao ::" << checkInTime;
+
+		cout << "Gio Ra ::" << CheckOutTime;
 	}
 	virtual float viewTotalBill() {
 		return 0;
 	}
+
 	virtual void allocateRoom(Room r1) {
 	}
 	virtual void allocateDish(Dish d1) {
@@ -206,22 +338,22 @@ public:
 	virtual int getsp() {
 		return 0;
 	}
-	
+
 };
-int Customer::id = 100;
+int Customer::id = 99;
 
 class RoomCustomer : public Customer
 {
 public:
-	double bill;
+	float bill;
 	Room r;
 	int bookStatus;
-	
+
 public:
 
 	float viewTotalbill()
 	{
-		cout << "Bill =" << bill;
+		cout << "Hoa Don =" << bill;
 		return bill;
 	}
 
@@ -234,45 +366,50 @@ public:
 	{
 
 		Customer::printCustomer();
-			
-			cout << "Room type :: " << r.roomType << endl;
-			cout << "Room Number :: " << r.roomNo << endl;
-			cout << "So Phong::" << r.sp << endl;
-		
+
+		cout << "Loai Phong :: " << r.roomType << endl;
+		cout << "So Phong :: " << r.sp << endl;
+
+
 	}
 	float viewTotalBill()
 	{
-		this->bill = r.rent ;
-		cout << "Bill :: " << this->bill;
+		this->bill = r.rent;
+		cout << "Hoa Don :: " << this->bill;
 		return bill;
 	}
 	void checkOut()
 	{
-		cout << "Your bill is " << this->bill << "/-" << endl;
+		cout << "Hoa Don Cua Ban La: " << this->bill << "/-" << endl;
 		this->bill = 0;
 		this->r.status = 0;
-		cout << "Thank You! Visit Again.\n" << endl;
+		cout << "Cam On Ban! Hen Gap Lai Ban.\n" << endl;
 	}
 	int getsp() {
 		return this->r.sp;
-	
+
 	}
 
 
 };
 
 
-class RestaurantCustomer :public Customer 
+class RestaurantCustomer :public RoomCustomer
 {
 public:
 	double bill;
 	Dish d;
 	int orderStatus;
 public:
-
+	RestaurantCustomer() {
+		this->bill = 0;
+		this->d.dishName = "None";
+		this->d.dishType = "None";
+		this->d.price = 0;
+	}
 	float viewTotalbill()
 	{
-		cout << "Bill =" << bill;
+		cout << "Tong Hoa Don Cua Ban La: " << bill;
 		return bill;
 	}
 
@@ -280,22 +417,22 @@ public:
 	{
 		this->d = d1;
 	}
-	
+
 	float viewTotalBill()
 	{
-		
-		this->bill = d.price ;
-		cout << "Bill :: " << this->bill << endl;
+
+		this->bill = d.price + r.rent;
+		cout << "Hoa Don Cua Ban La :: " << (size_t)this->bill << endl;
 		return this->bill;
 	}
 	void printCustomer()
 	{
 
-		Customer::printCustomer();
+		RoomCustomer::printCustomer();
 
-		cout << "Dish Name  :: " << d.dishName << endl;
-		cout << "Dish Type :: " << d.dishType << endl;
-		cout << "Price::" << d.price << endl;
+		cout << "Ten Mon An  :: " << d.dishName << endl;
+		cout << "Loai Mon An :: " << d.dishType << endl;
+		cout << "Gia Mon An::" << d.price << endl;
 
 	}
 
@@ -307,27 +444,11 @@ class Employee
 
 public:
 
-
-	virtual void performDuty() = 0;
-	virtual ~Employee() {
-	}
-};
-
-
-class RoomService :public Employee
-{
-public:
 	void performDuty()
 	{
-		cout << "Employee XYZ arriving at your doorstep...\n\n";
+		cout << "Nhan Vien Cua Chung Toi Dang Den...\n\n";
 	}
-
-	virtual ~RoomService() {
-	}
-
 };
-
-
 
 class Restaurant
 {
@@ -342,7 +463,7 @@ public:
 		cout << " Dish Name :: " << d.dishName << endl;
 		cout << " Price :: " << d.price << endl;
 		cout << " Dish Type :: " << d.dishType;
-	
+
 	}
 	Dish getDish(string dnam)
 	{
@@ -368,23 +489,33 @@ public:
 	}
 
 };
+int BookRoom(LIST* l, int r) {
+	int n = 0;
+	for (NODE* k = l->pHead; k != NULL; k = k->pNext)
+	{
 
+		if (k->data->getsp() == r) {
 
+			cout << "\nPhong Nay Da Duoc Dat ";
+			pressanykey();
+			n = 1;
+		}
 
-class Hotel
+	}
+	return n;
+}
+class Hotel :public RestaurantCustomer
 {
 private:
-	static Hotel* instanceHotel;
+	static Hotel* QLHotel;
 	string hotelName;
 	string hotelAddress;
+	string acc;
+	string pss;
 public:
-	Employee* employee[5];
+
 	Restaurant restuarant;
 	Room room[6];
-	string acc = "nam";
-	string pass = "123";
-	
-
 private:
 
 
@@ -394,11 +525,23 @@ private:
 		this->hotelAddress = add;
 	}
 public:
+	Hotel() {
+		this->acc = "nam";
+		this->pss = "123";
+	}
+	string getacc() {
+		return acc;
+	}
+	string getpss() {
+		return pss;
+
+	}
+
 	static Hotel* getHotel()
 	{
-		if (!instanceHotel)
-			instanceHotel = new Hotel("RENNAISSANCE", "HUBLI");
-		return instanceHotel;
+		if (!QLHotel)
+			QLHotel = new Hotel("KHACH SAN UTC2 ","Quan 9");
+		return QLHotel;
 	}
 
 	void setHotel(Restaurant r, Room rs[5])
@@ -435,98 +578,158 @@ public:
 	}
 	void displayAvailble() {
 		int i;
-		cout << "\n\n----------------------------------------------Room Details----------------------------------------------\n\n";
-		cout << setw(25) << "Room Type" << setw(25) << "Number of Beds" << setw(25) << "Rent" << setw(25) << "Room Number" <<setw(20) << "So Phong\n";
+		const char separator = ' ';
+		const int NoWidth = 3;
+		const int RTWidth = 25;
+		const int NumbWidth = 25;
+		const int RentWidth = 20;
+		const int SPWidth = 20;
+		cout << "\n\n-------------------------------------------------------Chi Tiet Phong-----------------------------------------------------\n\n";
+		cout << endl;
+
+		cout << "\n\n +----+--------------------------+--------------------------+---------------------+---------------------+";
+		cout << "\n | NO |         Loai Phong       |         So Giuong        |       Gia Tien      |     So Phong.       |";
+		cout << "\n +----+--------------------------+--------------------------+---------------------+---------------------+";
 		for (i = 0; i < 6; i++)
 		{
 			if (room[i].status == 0)
 			{
-				cout << setw(25) << room[i].roomType;
-				cout << setw(25) << room[i].noOfBeds;
-				cout << setw(25) << room[i].rent;
-				cout << setw(25) << room[i].roomNo;
-				cout << setw(18) << room[i].dsphong << "\n";
+
+				cout << "\n |" << setw(NoWidth) << setfill(separator) << room[i].roomNo << " |";
+				cout << setw(RTWidth) << setfill(separator) << room[i].roomType << " |";
+				cout << setw(NumbWidth) << setfill(separator) << room[i].noOfBeds << " |";
+				cout << setw(RentWidth) << setfill(separator) << room[i].rent << " |";
+				cout << setw(SPWidth) << setfill(separator) << room[i].dsphong << " |";
 			}
 		}
-		cout << "\n\n";
+		cout << "\n +----+--------------------------+--------------------------+---------------------+---------------------+";
+
 	}
 
 	void displayMenu()
 	{
-		cout << "\n\n-----------------------------------------------Menu-------------------------------------------------\n\n ";
-		int i;
-		const int width = 8;
-		cout << setw(25) << " STT" << setw(25) << " Dish Name" << setw(25) << "Price" << setw(25) << "Dish Type" << endl;
-		for (i = 0; i < 8; i++)
+		const char separator = ' ';
+		const int NoWidth = 25;
+		const int DishWidth = 25;
+		const int PriceWidth = 25;
+		const int RTWidth = 25;
+		cout << "\n\n°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°MENU°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°\n ";
+		cout << "\n\n +--------------------------+--------------------------+--------------------------+--------------------------+";
+		cout << "\n |                        NO|        Ten Mon An        |           Gia Tien       |        Loai Mon An       |";
+		cout << "\n +--------------------------+--------------------------+--------------------------+--------------------------+";
+		for (int i = 0; i < 8; i++)
 		{
-			cout << setw(25) << restuarant.dish[i].stt;
-			cout << setw(25) << restuarant.dish[i].dishName;
-			cout << setw(25) << restuarant.dish[i].price;
-			cout << setw(25) << restuarant.dish[i].dishType << "\n";
+			cout << "\n |" << setw(NoWidth) << setfill(separator) << restuarant.dish[i].stt << " |";
+			cout << setw(DishWidth) << setfill(separator) << restuarant.dish[i].dishName << " |";
+			cout << setw(PriceWidth) << setfill(separator) << restuarant.dish[i].price << " |";
+			cout << setw(RTWidth) << setfill(separator) << restuarant.dish[i].dishType << " |";
 		}
+		cout << "\n +--------------------------+--------------------------+--------------------------+--------------------------+";
 		cout << "\n\n";
 	}
 
-	void bookRoom(int r)
+	void bookRoom(LIST* l, int r)
 	{
-		int i;
-		for (i = 0; i < 6; i++)
+		int i, c = 0;
+	bk:
+		for (i = 0; ; i++)
 		{
 			int sphong;
 			if (room[i].roomNo == r) {
-				
-				 if (r == 1) {
+
+				if (r == 1) {
+				st1:
 					cout << "\nNhap so phong 100-200: ";
 					cin >> sphong;
+					c = BookRoom(l, sphong);
+					if (c == 1) {
+						system("cls");
+						cout << "\nVui Long Nhap lai !";
+						goto st1;
+					}
 					while (sphong > 200 || sphong <= 100) {
 
-
-						cout << "\nVui long nhap lai so phong:\n";
-						cin >> sphong;
+						system("cls");
+						cout << "\nSo Phong Khong Hop Le Vui Long Nhap Lai !\n";
+						goto st1;
 					}
-				
+
 					room[i].sp = sphong;
 				}
-				 if (r == 2) {
+				if (r == 2) {
+				st2:
 					cout << "\nNhap so phong 200-300: ";
 					cin >> sphong;
-					while (sphong > 300 || sphong <= 200) {
-						cout << "\nVui long nhap lai so phong:\n";
-						cin >> sphong;
+					c = BookRoom(l, sphong);
+					if (c == 1) {
+						system("cls");
+						cout << "\nVui Long Nhap lai !";
+
+						goto st2;
 					}
-					room[i].sp = sphong;	
+					while (sphong > 300 || sphong <= 200) {
+						system("cls");
+						cout << "\nSo Phong Khong Hop Le Vui Long Nhap Lai !\n";
+						goto st2;
+					}
+					room[i].sp = sphong;
 				}
-				 if (r == 3) {
+				if (r == 3) {
+				st3:
 					cout << "\nNhap so phong 300-400: ";
 					cin >> sphong;
+					c = BookRoom(l, sphong);
+					if (c == 1) {
+						system("cls");
+						cout << "\nVui Long Nhap Lai !\n";
+						goto st3;
+					}
 					while (sphong > 400 || sphong <= 300) {
-						cout << "\nVui long nhap lai so phong:\n";
-						cin >> sphong;
-					}		
+						system("cls");
+						cout << "\nSo Phong Khong Hop Le Vui Long Nhap Lai !\n";
+						goto st3;
+					}
 					room[i].sp = sphong;
 				}
 				if (r == 4) {
+				st4:
+
 					cout << "\nNhap so phong 400-500: ";
 					cin >> sphong;
+					c = BookRoom(l, sphong);
+					if (c == 1) {
+						system("cls");
+						cout << "\nVui Long Nhap Lai !\n";
+						goto st4;
+					}
 					while (sphong > 500 || sphong <= 400) {
-						cout << "\nVui long nhap lai so phong:\n";
-						cin >> sphong;
+						system("cls");
+						cout << "\nSo Phong Khong Hop Le Vui Long Nhap Lai !\n";
+						goto st4;
 					}
 					room[i].sp = sphong;
-				
+
 				}
 				if (r == 5) {
+				st5:
 					cout << "\nNhap so phong 500-600: ";
 					cin >> sphong;
+					c = BookRoom(l, sphong);
+					if (c == 1) {
+						system("cls");
+						cout << "\nVui Long Nhap lai";
+
+						goto st5;
+					}
 					while (sphong > 600 || sphong <= 500) {
 
-
-						cout << "\nVui long nhap lai so phong:\n";
-						cin >> sphong;
+						system("cls");
+						cout << "\nSo Phong Khong Hop Le Vui Long Nhap Lai !\n";
+						goto st5;
 					}
 					cout << "\nDat Phong Thanh Cong";
 					room[i].sp = sphong;
-					
+
 				}
 				cout << "\nVui Long Nhap So Ngay Ban O ";
 				int sn;
@@ -535,7 +738,7 @@ public:
 					cout << "\nVui Long Nhap Lai";;
 					cin >> sn;
 				}
-				room[i].rent=room[i].rent*sn;
+				room[i].rent = room[i].rent * sn;
 				cout << "\nDat Phong Thanh Cong";
 				break;
 			}
@@ -544,14 +747,15 @@ public:
 				{
 					cout << "\nVui Long Nhap Lai :";
 					cin >> r;
+					goto bk;
 				}
 			}
-			
-			
+
+
 		}
-		
+
 	}
-	
+
 
 	void askFeedback()
 	{
@@ -559,25 +763,25 @@ public:
 		string cname;
 		ofstream feedback;
 		feedback.open("feedback.txt", ios::app);
-		feedback << "Customer Name\t : ";
-		cout << "Enter your Name\n";
+		feedback << "Ten Khach Hang\t : ";
+		cout << "Nhap Ten Cua ban \n";
 		cin >> cname;
 		feedback << cname << "\t\t\t";
-		cout << " Thanks for your time! \n How likely are you to recommend Hotel Rennaisance to a Friend or Colleague? \n Rate on a scale of 1-10\n";
+		cout << " Cam On Thoi Gian Cua Ban! \n Ban Danh Gia Khach Sab Cua Chung Toi Nhu The Nao? \n Cham Diem Tu 1-10\n";
 		cin >> f;
 		feedback << "Feedback\t: ";
 		feedback << f << "\n";
 		feedback.close();
-		cout << " Thanks for your valuable feedback!" << endl;
+		cout << " Cam On Danh Gia Cua Ban!" << endl;
 	}
 
 	void getCustomerData(Customer* c)
 	{
-		cout << " Name :: " << c->custName << endl;
-		cout << " Address :: " << c->custAddress << endl;
-		cout << " Phone :: " << c->custPhone << endl;
-		cout << " Email :: " << c->custEmail << endl;
-		cout << " Check-In Time:: " << c->checkInTime << endl;
+		cout << " Ho va Ten :: " << c->getcustname() << endl;
+		cout << " Dia chi :: " << c->getcustAddress() << endl;
+		cout << " So Dien Thoai  :: " << c->getcustPhone() << endl;
+		cout << " CMND :: " << c->getcustCMND() << endl;
+		cout << " Gio Vao:: " << c->getcit() << endl;
 	}
 
 	void vacateRoom(int rno)
@@ -589,11 +793,11 @@ public:
 			{
 				j = 1;
 				room[i].status = 0;
-				cout << "Thank You! Visit Again.\n" << endl;
+				cout << "Cam On! Hen Gap Lai Ban.\n" << endl;
 			}
 		}
 		if (j == 0)
-			cout << "Sorry! Room Not Found, or occupied at the moment\n";
+			cout << "Xin Loi!So Phong Khong Hop Le\n";
 	}
 	void takeOrder(string dnm)
 	{
@@ -603,57 +807,245 @@ public:
 			if (restuarant.dish[i].stt == dnm)
 			{
 				j = 1;
-				cout << "Order Successful\n" << endl;
+				cout << "Dat Do An Thanh Cong\n" << endl;
 			}
-			
+
 		}
 		if (j == 0)
-			
-			cout << "Sorry! Dish Not Found, Enter a valid entry\n";
+
+			cout << "Xin Loi!,Vui Long Nhap Lai\n";
 		return;
 	}
 
 
+
 };
-Hotel* Hotel::instanceHotel = 0;
-void pressanykey() {
-	printf("\n\nNhan phim bat ki de tiep tuc ...");
+Hotel* Hotel::QLHotel = 0;
+
+void Prinlist(LIST* l) {
+	NODE* pTmp = l->pHead;
+	if (pTmp == NULL)
+	{
+		cout << "Danh sach rong";
+		return;
+	}
+	while (pTmp != NULL)
+	{
+		RoomCustomer* cs;
+		cs = pTmp->data;
+		cs->printCustomer();
+		system("pause");
+		pTmp = pTmp->pNext;
+	}
+}
+void Ghi_1_Thong_Tin_customer(RestaurantCustomer* cs) {
+
+	ofstream customer;
+	char o;
+	if (!customer.eof()) {
+		customer.open("Customer.txt", ios::app);
+		cout << "\n \t BAN CO MUON LUU THONG TIN KHONG?(y/n) :";
+		cin >> o;
+		if (o == 'y' || o == 'Y')
+		{
+
+			customer << cs->getCustID() << ",";
+			customer << cs->getcustname() << ",";
+			customer << cs->getcustAddress() << ",";
+			customer << cs->getcustPhone() << ",";
+			customer << cs->getcustCMND() << ",";
+			customer << cs->r.roomNo << ",";
+			customer << cs->r.sp << ",";
+			customer << cs->r.roomType << ",";
+			customer << cs->d.dishName << ",";
+			customer << cs->d.dishType << ",";
+			customer << cs->d.price << ",";
+			customer << cs->bill;
+			customer.seekp(1, 1);
+			customer << endl;
+			cout << "Room Booked & Details saved";
+		}
+		else
+			cout << "Details not saved! ";
+	}else{
+		customer.open("Customer.txt", ios::in);
+	cout << "\n \t BAN CO MUON LUU THONG TIN KHONG?(y/n) :";
+	cin >> o;
+	if (o == 'y' || o == 'Y')
+	{
+
+		customer << cs->getCustID() << ",";
+		customer << cs->getcustname() << ",";
+		customer << cs->getcustAddress() << ",";
+		customer << cs->getcustPhone() << ",";
+		customer << cs->getcustCMND() << ",";
+		customer << cs->r.roomNo << ",";
+		customer << cs->r.sp << ",";
+		customer << cs->r.roomType << ",";
+		customer << cs->d.dishName << ",";
+		customer << cs->d.dishType << ",";
+		customer << cs->d.price << ",";
+		customer << cs->bill;
+		customer.seekp(1, 1);
+		customer << endl;
+		cout << "Room Booked & Details saved";
+	}
+	else
+		cout << "Details not saved! ";
+	}
+	customer.close();
 	getch();
-	system("cls");
+
+}
+
+
+void Doc_1_Thong_Tin_sv(ifstream& filein, RestaurantCustomer* rs) {
+	int id;
+	string n;
+	string a;
+	string p;
+	string C;
+	filein >> id;
+	rs->setCustID(id);
+	filein.seekg(1, 1);
+	getline(filein, n,',');
+	rs->setCname(n);
+	getline(filein, a, ',');
+	rs->setAddress(a);
+	getline(filein, p, ',');
+	rs->setphone(p);
+	getline(filein,C, ',');
+	rs->setCMND(C);
+	filein >> rs->r.roomNo;
+	filein.seekg(1, 1);
+	filein >> rs->r.sp;
+	filein.seekg(1, 1);
+	getline(filein, rs->r.roomType, ',');
+	getline(filein, rs->d.dishName, ',');
+	getline(filein, rs->d.dishType, ',');
+	filein >> rs->bill;
+	filein.seekg(1, 1);
+	string temp;
+	getline(filein, temp);
+
+}
+
+//void Doc_Danh_Sach_Sinh_Vien(ifstream& filein, LIST* l) {
+//	while (!filein.eof()) {
+//		//b??c 1 ??c thông tin ;
+//		RestaurantCustomer* rs = new RestaurantCustomer;
+//		NODE* n = KhoiTaoNode(rs);
+//		Doc_1_Thong_Tin_sv(filein, rs);
+//		//b??c 2 : kh?i t?o node sv
+//		//b??c 3 : thêm sinh viên vào dslk ??n các sinh viên ;
+//		ThemVaoCuoi(l, n);
+//
+//		if (filein.eof()) {
+//			return;
+//		}
+//	}
+//
+//
+//
+//}
+void XoaNodeCoKhoaBatKy(LIST* l, int x) {
+
+	if (l->pHead->data->getsp() == x) {
+		XoaDau(l);
+		return;
+	}
+	if (l->pTail->data->getsp() == x) {
+		XoaCuoi(l);
+		return;
+	}
+	NODE* g = new NODE; //node g la node tro den node nam truoc node can xoa
+	for (NODE* k = l->pHead; k != NULL; k = k->pNext) {
+		//phat hien phan tu can xoa
+		if (k->data->getsp() == x) {
+			g->pNext = k->pNext;
+			delete k;
+			return;
+		}
+
+		g = k;
+	}
+}
+void Displayds(LIST* l) {
+	const char separator = ' ';
+	const int NoWidth = 8;
+	const int GuestWidth = 25;
+	const int AddressWidth = 25;
+	const int RoomWidth = 20;
+	const int ContactNoWidth = 20;
+	cout << "\n\t\t\t    DANH SACH KHACH HANG DA DAT PHONG";
+	cout << "\n\t\t\t   -----------------------";
+	cout << "\n\n +---------+--------------------------+--------------------------+---------------------+---------------------+";
+	cout << "\n | ID.     |         Guest Name       |         Address          |        Room Type    |    Contact No.      |";
+	cout << "\n +---------+--------------------------+--------------------------+---------------------+---------------------+";
+	for (NODE* k = l->pHead; k != NULL; k = k->pNext)
+	{
+		cout << "\n |" << setw(NoWidth) << setfill(separator) << k->data->getCustID() << " |";
+		cout << setw(GuestWidth) << setfill(separator) << k->data->getcustname() << " |";
+		cout << setw(AddressWidth) << setfill(separator) << k->data->getcustPhone() << " |";
+		cout << setw(RoomWidth) << setfill(separator) << k->data->getsp() << " |";
+		cout << setw(ContactNoWidth) << setfill(separator) << k->data->getcustCMND() << " |";
+
+	}
+	cout << "\n +---------+--------------------------+--------------------------+---------------------+---------------------+";
+	getchar();
+}
+void DangNhap() {
+	string dname, tk, mk;
+	Hotel ht;
+	rewind(stdin);
+	cout << setw(60) << "NHAP TAI KHOAN : ";
+	getline(cin, tk);
+	cout << setw(59) << "NHAP MAT KHAU  :";
+	getline(cin, mk);
+	while (tk != ht.getacc() || mk != ht.getpss()) {
+		system("cls");
+		cout << setw(70) << "NHAP LAI TAI KHOAN VA MAT KHAU \n";
+		cout << setw(60) << "NHAP TAI KHOAN : ";
+		getline(cin, tk);
+		cout << setw(59) << "NHAP MAT KHAU  :";
+		getline(cin, mk);
+
+	}
+	char s = 219;
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hConsole, 250);
+	for (int i = 0; i < 110; i++)
+	{
+		if (i < 20)
+			Sleep(1);
+		else if (i < 80)
+			Sleep(1);
+		else
+			Sleep(1);
+		cout << s;
+	}
+	SetConsoleTextAttribute(hConsole, 130);
+	Sleep(100);
 }
 void Menu() {
-	int check = 0;
-
-
-
-	//ifstream file("Description.txt");
-	//if (file.is_open()) {
-	//	string line;
-	//	while (getline(file,line)) {
-	//		printf("%s", line.c_str());
-	//	}
-	//	file.close();
-	//}
-
+	LIST* l;
+	KhoiTaoDSLK(l);
 	cout << "\n";
-	int ch, i =0, o, ch1, ch2, r, rno, rcount = 0, dcount = 0;
+	int i = 0, o, sl, rno;
 	Room r2;
-	string dname, tk, mk;
+	string dname;
 	Dish d2;
-	Hotel* ht = ht->getHotel();
-	vector<Customer*> ds_customer;
+	Hotel * ht=ht->getHotel();
 	Dish d[8] = {
-		Dish("1","Chocolate Fondue",140,"Desert"),
-		Dish("2","Manchow Soup",110,"Soup"),
-		Dish("3","Shahi Paneer",220,"Main Course"),
-		Dish("4","Arizona Tea",100,"Beverage"),
-		Dish("5","Grilled Romaine Salad",180,"Salad"),
-		Dish("6","Mushroom Manchurian",170,"Starter"),
-		Dish("7","Pina Colada",210,"Cocktail"),
-		Dish("8","Raspberry Ripple",120,"Ice Cream")
+		Dish("1","Bua Sang Thuong",100000,"Do An"),
+		Dish("2","Bua Sang Buffet",200000,"Do An"),
+		Dish("3","Bua Toi",200000,"Do Uong"),
+		Dish("4","Bia",50000,"Do Uong"),
+		Dish("5","Nuoc Suoi",20000,"Do Uong"),
+		Dish("6","Snack",20000,"Do An"),
+		Dish("7","Nuoc Ngot",40000,"Do Uong"),
+		Dish("8","Ruou",150000,"Do An")
 	};
-
-	
 	Restaurant res;
 	for (i = 0; i < 8; i++)
 	{
@@ -662,278 +1054,297 @@ void Menu() {
 	ht->restuarant = res;
 
 	Room rm[5] = {
-	   Room("Single Room",1,3000,1,"100-199"),
-	   Room("Double Room",1,4000,2,"200-299"),
-	   Room("TripBoule Room",3,5000,3,"300-399"),
-	   Room("Double Double Room",2,6000,4,"400-499"),
-	   Room("Vip Room",2,7000,5,"500-599"),
-
+	   Room("Phong Don",1,300000,1,"100-199"),
+	   Room("Phong Doi",2,400000,2,"200-299"),
+	   Room("Phong Ba",3,500000,3,"300-399"),
+	   Room("Phong Deluxe ",2,600000,4,"400-499"),
+	   Room("Phong Suit",2,700000,5,"500-599"),
 	};
-
 	ht->setHotel(res, rm);
-	cout << "\n\t\t\t\tNhap Tai Khoan: ";
-	getline(cin, tk);
-	cout << "\n\t\t\t\tNhap Mat khau :";
-	getline(cin, mk);
-	while (tk != ht->acc || mk != ht->pass) {
-		system("cls");
-		cout << "\n\t\t\t\tNhap Lai Tai Khoan va Mat Khau";
-		cout << "\n\t\t\t\tNhap Tai Khoan: ";
-		getline(cin, tk);
-		cout << "\n\t\t\t\tNhap Mat khau :";
-		getline(cin, mk);
+	dangnhap:
+	DangNhap();
+	ifstream filein;
+	filein.open("Customer.txt", ios::in);
+	if (filein.fail()) {
+		cout << "\nFile k ton tai";
+		system("pause");
 	}
+	else {
+		/*RestaurantCustomer *rs= new RestaurantCustomer;
+		Doc_1_Thong_Tin_sv(filein,rs);
+		NODE* p = KhoiTaoNode(rs);
+		ThemVaoCuoi(l, p);*/
 
+	}
+	textcolor(11);
 	while (true)
 	{
-		
-			
+		system("cls");
 
-
+	level1:	cout << "\t\t\t°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°\n";
+		cout << "\t\t\t°\t\tCHUONG TRINH QUAN LY KHACH SAN \t\t\t°\n";
+		cout << "\t\t\t°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°\n";
+		cout << "\t\t\t°\t	1.Danh Sach Phong Dang Co\t\t\t°\n";
+		cout << "\t\t\t°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°\n";
+		cout << "\t\t\t°\t	2.Dat Phong              \t\t\t°\n";
+		cout << "\t\t\t°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°\n";
+		cout << "\t\t\t°\t	3.Don Phong              \t\t\t°\n";
+		cout << "\t\t\t°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°\n";
+		cout << "\t\t\t°\t	4.Danh Sach Do An        \t\t\t°\n";
+		cout << "\t\t\t°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°\n";
+		cout << "\t\t\t°\t	5.Dat Do An              \t\t\t°\n";
+		cout << "\t\t\t°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°\n";
+		cout << "\t\t\t°\t	6.In Hoa Don             \t\t\t°\n";
+		cout << "\t\t\t°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°\n";
+		cout << "\t\t\t°\t	7.Khong Hai Long         \t\t\t°\n";
+		cout << "\t\t\t°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°\n";
+		cout << "\t\t\t°\t	8.Give FeedBack          \t\t\t°\n";
+		cout << "\t\t\t°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°\n";
+		cout << "\t\t\t°\t	9.Danh Sach Phong Da Dat\t\t\t°\n";
+		cout << "\t\t\t°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°\n";
+		cout << "\t\t\t°\t	0.Thoat.                 \t\t\t°\n";
+		cout << "\t\t\t°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°\n";
+		cout << "\t\t\t--------------------Nhap Lua Chon Cua Ban------------------------\n";
+		cout << "\t\t\t";
+		cin  >> sl;
+		{
+			if (sl == 1) {
 				system("cls");
-			level1:	cout << "\t\t\t-----------------------------------------------------------------\n";
-				cout <<"\t\t\t------------CHUONG TRINH QUAN LY KHACH SAN ----------------------\n";
-				cout <<"\t\t\t-	1.Danh Sach Phong Dang Co\t\t\t\t-\n";
-				cout <<"\t\t\t-	2.Dat Phong              \t\t\t\t-\n";
-				cout <<"\t\t\t-	3.Don Phong              \t\t\t\t-\n";
-				cout <<"\t\t\t-	4.Danh Sach Do An        \t\t\t\t-\n";
-				cout <<"\t\t\t-	5.Dat Do An              \t\t\t\t-\n";
-				cout <<"\t\t\t-	6.In Hoa Don             \t\t\t\t-\n";
-				cout <<"\t\t\t-	7.Khong Hai Long         \t\t\t\t-\n";
-				cout <<"\t\t\t-	8.Huy Dat Phong          \t\t\t\t-\n";
-				cout <<"\t\t\t-	9.Give FeedBack          \t\t\t\t-\n";
-				cout <<"\t\t\t-	10.Danh Sach Phong Da Dat\t\t\t\t-\n";
-				cout <<"\t\t\t--------------------Nhap Lua Chon Cua Ban------------------------\n";
-				cin >> ch1;
-				Customer* customer = new RoomCustomer ;
+				textcolor(14);
+				ht->displayAvailble();
+				pressanykey();
+				system("cls");
+				textcolor(11);
+				goto level1;
+			}
+			else if (sl == 2) {
+				system("cls");
+				textcolor(14);
+				cout << "Nhap Thong Tin Khach Hang\n";
+				RestaurantCustomer *room = new RestaurantCustomer();
+				NODE* p = KhoiTaoNode(room);
+				room->setData();
+				system("cls");
+				ThemVaoCuoi(l, p);
+				ht->displayAvailble();
+				cout << "\n\tNhap Loai Phong 1-5: ";
+				cin >> rno;
+				ht->bookRoom(l, rno);
+				r2 = ht->getRoom(rno);
+				room->allocateRoom(r2);
+				Ghi_1_Thong_Tin_customer(room);
+				pressanykey();
+				system("cls");
+				textcolor(11);
+				goto level1;
+			}
+			else if (sl == 3) {
+				textcolor(16);
+				if (l->pHead == NULL)
 				{
-					if (ch1 == 1) {
-						system("cls");
-						ht->displayAvailble();
-						system("pause");
-						system("cls");
-						goto level1;
-					}
-					else if (ch1==2) {
-						system("cls");
-						
-						cout << "Enter Your details\n";
-						customer->setData();
-						
-						check++;
-						system("cls");
-						ds_customer.push_back(customer);
-						
-						ht->displayAvailble();
-						cout << "Enter Room No\n";
-						cin >> rno;
-						ht->bookRoom(rno);
-						r2 = ht->getRoom(rno);
-						customer->allocateRoom(r2);
-						pressanykey();
-						system("cls");
-						goto level1;
-					}
-					else if (ch1 ==3) {
-						if (check == 0)
-						{
-							cout << "\n\n-----------------------------------------------------------------------------------------\n\n";
-							cout << "Cannot vacate a book unless booked\n";
-							cout << "\n\n-----------------------------------------------------------------\n\n";
-						}
-
-						else
-						{
-
-							cout << "Enter Room No\n";
-							cin >> rno;
-							for(int i=0;i<ds_customer.size();i++){
-								while (ds_customer[i]->getsp() != rno) {
-									
-									cout << "\nVui Long Nhap Lai";
-									cin >> rno;
-								}
-								cout << "Room vacated\n";
-							
-							}
-							
-	
-						}
-						goto level1;
-					}
-					else if (ch1 == 4) {
-						system("cls");
-						ht->displayMenu();
-						pressanykey();
-						system("cls");
-						goto level1;
-					}
-
-					else if (ch1 == 5) {
-						system("cls");
-
-						if (check == 0) {
-							cout << "\nVui Long Nhap Thong Tin truoc\n";
-							pressanykey();
-							goto level1;
-						}
-						else {
-							o = 1;
-							rewind(stdin);
-							ht->displayMenu();
-							int od;
-						
-							cout << "\nNhap Phong Muon Order ";
-							cin >> od;
-							for (int i = 0; i < ds_customer.size(); i++) {
-								if (ds_customer[i]->getsp() == od) {
-									rewind(stdin);
-									cout << "Enter Dish Name you want to Order(Make sure you enter the exact same name.)\n";
-									getline(cin, dname);
-									ht->takeOrder(dname);
-									d2 = ht->getDish(dname);
-									customer->allocateDish(d2);
-									
-								}
-								
-							
-							}
-							
-						}
-						pressanykey();
-						system("cls");
-
-						if (o == 0)
-						{
-							cout << "\n\n-----------------------------------------------------------------------------------------\n\n";
-							cout << "No such Dish Found";
-						}
-
-						goto level1;
-					}
-					else if (ch1 == 6) {
-						if (check == 0)
-						{
-							cout << "\n\n------------------------------------------------------------------------------------------\n\n";
-
-							cout << "Cannot get Invoice Details unless you book a Room\n";
-							cout << "\n\n-----------------------------------------------------------------\n\n";
-							pressanykey();
-							system("cls");
-						}
-
-						else
-						{
-							system("cls");
-							cout << "\n\n-----------------------------------------------------------------\n\n";
-							int px;
-							cout << "\nNhap So Phong Can Xuat Hoa Don";
-							cin >> px;
-							
-							for (int i = 0; i < ds_customer.size(); i++)
-							{
-								if(ds_customer[i]->getsp()==px){
-									ds_customer[i]->printCustomer();
-									ds_customer[i]->viewTotalBill();
-									cout << "\n\n-----------------------------------------------------------------\n\n";
-									pressanykey();
-									system("cls");
-									
-								}
-							}
-						
-							goto level1;
-						}
-					}
-					else if (ch1 == 7) {
-						if (check == 0)
-
-						{
-							cout << "\n\n--------------------------------------------------------------------------------------------\n\n";
-							cout << "Cannot call Room Service Unless you book a Room\n";
-							cout << "\n\n-----------------------------------------------------------------\n\n";
-							pressanykey();
-							system("cls");
-						}
-
-						else
-						{
-							Employee *e = new RoomService;
-							e->performDuty();
-							
-						}
-						goto level1;
-					}
-					else if (ch1 == 8) {
-						if (check == 0)
-						{
-							cout << "\n\n-----------------------------------------------------------------------------------\n\n";
-							cout << "No Room Booked\n";
-							pressanykey();
-						}
-						else
-						{
-							cout << "Enter Room No\n";
-							cin >> rno;
-							ht->vacateRoom(rno);
-							cout << "Cancellation Successful!\n";
-
-						}
-						goto level1;
-					}
-					else if (ch1 == 9) {
-						if (check == 0)
-						{
-							cout << "\n\n-----------------------------------------------------------------------------------\n\n";
-							cout << "Cannot give feedback unless you order a Dish\n";
-							pressanykey();
-
-						}
-						else
-
-							ht->askFeedback();
-						goto level1;
-					}
-
-				else if( ch1==10){
-					if (check == 0)
+					cout << "\n\n-----------------------------------------------------------------------------------------\n\n";
+					cout << "Vui Long Dat Phong Truoc!\n";
+					pressanykey();
+					cout << "\n\n-----------------------------------------------------------------\n\n";
+				}
+				else
+				{
+					int b = 0;
+				vacate:
+					cout << "Nhap So Phong Can Don\n";
+					cin >> rno;
+					for (NODE* k = l->pHead; k != NULL; k = k->pNext)
 					{
-						cout << "\n\n-----------------------------------------------------------------------------------\n\n";
-						cout << "Danh sach trong\n";
-						pressanykey();
+						if (k->data->getsp() == rno) {
 
-					}
-					else {
-						system("cls");
-						cout << "\n\n----------------------------------------------Room List Booked----------------------------------------------\n\n";
-						cout  << "ID" << setw(5) << "Name" << setw(20) << "Address" << setw(20) << "Phone Number" << setw(20) << "Check In Time" << setw(20) <<"Room Type" << setw(20) <<"Room Number "<< setw(15) <<"So Phong\n";
-						for (int i = 0; i < ds_customer.size(); i++) {
-							
-							cout << "\nKhach Hang Thu " << i + 1 <<endl;
-							
-							ds_customer[i]->printCustomer();
-							
-
+							cout << "Phong Da Duoc Don\n";
+							b = 1;
+							pressanykey();
 						}
-						pressanykey();
 					}
+					if (b == 0) {
+						system("cls");
+						cout << "\nVui Long Nhap Lai ";
+						goto vacate;
+					}
+				}
+				system("cls");
+				textcolor(11);
+				goto level1;
+			}
+			else if (sl == 4) {
+				textcolor(16);
+				system("cls");
+				ht->displayMenu();
+				pressanykey();
+				system("cls");
+				textcolor(11);
+				goto level1;
+			}
+			else if (sl == 5) {
+				system("cls");
+				textcolor(6);
+				if (l->pHead == NULL) {
+					cout << "\nVui Long Nhap Thong Tin truoc\n";
+
+					pressanykey();
+					textcolor(11);
 					goto level1;
 				}
-				else if (ch1 == 11) {
-				return ;
-				}
 				else {
-				cout << "\nNhap Lai ";
+					o = 1;
+					rewind(stdin);
+					ht->displayMenu();
+					int od;
+					cout << "\nNhap Phong Muon Order ";
+					cin >> od;
+					for (NODE* k = l->pHead; k != NULL; k = k->pNext)
+					{
+						if (k->data->getsp() == od) {
+
+							rewind(stdin);
+							cout << "Nhap So Thu Tu Mon An Ban Muon Dat\n";
+							getline(cin, dname);
+							ht->takeOrder(dname);
+							d2 = ht->getDish(dname);
+							k->data->allocateDish(d2);
+							Ghi_1_Thong_Tin_customer(k->data);
+							break;
+
+						}
+
+					}
+
+				}
+				pressanykey();
+				system("cls");
+
+				if (o == 0)
+				{
+					cout << "\n\n-----------------------------------------------------------------------------------------\n\n";
+					cout << "Khong Co Mon An Nao Giong Vay";
+				}
+				textcolor(11);
+				goto level1;
+			}
+			else if (sl == 6) {
+				textcolor(190);
+				if (l->pHead==NULL)
+				{
+					cout << "\n\n------------------------------------------------------------------------------------------\n\n";
+
+					cout << "Danh Sach Khach Hang Trong Khong Co Khach Hang De In Hoa Don\n";
+					cout << "\n\n-----------------------------------------------------------------\n\n";
+					pressanykey();
+					system("cls");
+				}
+				else
+				{
+
+					system("cls");
+				tk:
+					cout << "\n\n-----------------------------------------------------------------\n\n";
+					int px;
+					cout << "\nNhap So Phong Can Xuat Hoa Don: ";
+					cin >> px;
+					int f = 0;
+					for (NODE* k = l->pHead; k != NULL; k = k->pNext)
+					{
+						if (k->data->getsp() == px) {
+							system("cls");
+							k->data->printCustomer();
+							k->data->viewTotalBill();
+							XoaNodeCoKhoaBatKy(l,px);
+							cout << "\n\t\t\t\tXin Cam On Quy Khach ";
+							pressanykey();
+							system("cls");
+							textcolor(11);
+							goto level1;
+							cout << "\n\n-----------------------------------------------------------------\n\n";
+							f = 1;
+							pressanykey();
+						}
+					}
+					if (f == 0) {
+						system("cls");
+						cout << "\nVui Long Nhap Lai:";
+						goto tk;
+					}
+
+					system("cls");
+					textcolor(11);
+					goto level1;
+				}
+			}
+			else if (sl == 7) {
+				textcolor(4);
+				if (l->pHead == NULL)
+
+				{
+					cout << "\n\n--------------------------------------------------------------------------------------------\n\n";
+					cout << "Danh Sach Khach Hang Trong Khong The Goi Nhan Vien \n";
+					cout << "\n\n-----------------------------------------------------------------\n\n";
+					pressanykey();
+					system("cls");
 				}
 
+				else
+				{
+					Employee e;
+					e.performDuty();
+					pressanykey();
+
+				}
+				system("cls");
+				textcolor(11);
+				goto level1;
 			}
-			/*catch (string erro)
-			{
-				erro = "EROR";
-				cout << "----------------------------------------" << erro << "------------------------------------------\n\n";
-			}*/
+			else if (sl == 8) {
+				if (l->pHead == NULL)
+				{
+					cout << "\n\n-----------------------------------------------------------------------------------\n\n";
+					cout << "Danh Sach Khach Hang Trong Khong The Gui Phan Hoi\n";
+					pressanykey();
+
+				}
+				else {
+
+					ht->askFeedback();
+					pressanykey();
+				}
+				system("cls");
+				textcolor(11);
+				goto level1;
+			}
+			else if (sl == 9) {
+				textcolor(3);
+				if (l->pHead == 0)
+				{
+					cout << "\n\n-----------------------------------------------------------------------------------\n\n";
+					cout << "Danh Sach Khach Hang Trong\n";
+					pressanykey();
+				}
+				else {
+					system("cls");
+					Displayds(l);
+					pressanykey();
+				}
+				textcolor(11);
+				goto level1;
+			}
+			else if (sl == 0) {
+			
+			exit(0);
+			}
+
+			else {
+				cout << "\nVui Long Nhap Lai! ";
+				pressanykey();
+			}
 		}
 	}
+	filein.close();
+}
 
 int main()
 {
