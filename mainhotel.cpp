@@ -861,7 +861,7 @@ void Ghi_1_Thong_Tin_customer(RestaurantCustomer* cs) {
 			customer << cs->d.dishType << ",";
 			customer << cs->d.price << ",";
 			customer << cs->bill;
-			customer.seekp(1, 1);
+			customer.seekp(1, ios::cur);
 			customer << endl;
 			cout << "Room Booked & Details saved";
 		}
@@ -886,7 +886,7 @@ void Ghi_1_Thong_Tin_customer(RestaurantCustomer* cs) {
 		customer << cs->d.dishType << ",";
 		customer << cs->d.price << ",";
 		customer << cs->bill;
-		customer.seekp(1, 1);
+		customer.seekp(1, ios::cur);
 		customer << endl;
 		cout << "Room Booked & Details saved";
 	}
@@ -907,7 +907,7 @@ void Doc_1_Thong_Tin_sv(ifstream& filein, RestaurantCustomer* rs) {
 	string C;
 	filein >> id;
 	rs->setCustID(id);
-	filein.seekg(1, 1);
+	filein.seekg(1, ios::cur);
 	getline(filein, n,',');
 	rs->setCname(n);
 	getline(filein, a, ',');
@@ -917,37 +917,37 @@ void Doc_1_Thong_Tin_sv(ifstream& filein, RestaurantCustomer* rs) {
 	getline(filein,C, ',');
 	rs->setCMND(C);
 	filein >> rs->r.roomNo;
-	filein.seekg(1, 1);
+	filein.seekg(1, ios::cur);
 	filein >> rs->r.sp;
-	filein.seekg(1, 1);
+	filein.seekg(1, ios::cur);
 	getline(filein, rs->r.roomType, ',');
 	getline(filein, rs->d.dishName, ',');
 	getline(filein, rs->d.dishType, ',');
 	filein >> rs->bill;
-	filein.seekg(1, 1);
+	filein.seekg(1, ios::cur);
 	string temp;
 	getline(filein, temp);
 
 }
 
-//void Doc_Danh_Sach_Sinh_Vien(ifstream& filein, LIST* l) {
-//	while (!filein.eof()) {
-//		//b??c 1 ??c thông tin ;
-//		RestaurantCustomer* rs = new RestaurantCustomer;
-//		NODE* n = KhoiTaoNode(rs);
-//		Doc_1_Thong_Tin_sv(filein, rs);
-//		//b??c 2 : kh?i t?o node sv
-//		//b??c 3 : thêm sinh viên vào dslk ??n các sinh viên ;
-//		ThemVaoCuoi(l, n);
-//
-//		if (filein.eof()) {
-//			return;
-//		}
-//	}
-//
-//
-//
-//}
+void Doc_Danh_Sach_Sinh_Vien(ifstream& filein, LIST* l) {
+	while (!filein.eof()) {
+		//b??c 1 ??c thông tin ;
+		RestaurantCustomer* rs = new RestaurantCustomer;
+		NODE* n = KhoiTaoNode(rs);
+		Doc_1_Thong_Tin_sv(filein, rs);
+		//b??c 2 : kh?i t?o node sv
+		//b??c 3 : thêm sinh viên vào dslk ??n các sinh viên ;
+		ThemVaoCuoi(l, n);
+		return;
+		if (filein.eof()) {
+			return;
+		}
+	}
+
+
+
+}
 void XoaNodeCoKhoaBatKy(LIST* l, int x) {
 
 	if (l->pHead->data->getsp() == x) {
@@ -1070,10 +1070,7 @@ void Menu() {
 		system("pause");
 	}
 	else {
-		/*RestaurantCustomer *rs= new RestaurantCustomer;
-		Doc_1_Thong_Tin_sv(filein,rs);
-		NODE* p = KhoiTaoNode(rs);
-		ThemVaoCuoi(l, p);*/
+		Doc_Danh_Sach_Sinh_Vien(filein,l);
 
 	}
 	textcolor(11);
