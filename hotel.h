@@ -127,9 +127,9 @@ public:
 	Room(string roomType, int noOfBeds, double rent, int roomNo, string listRoom);
 	void setRoom();
 	Room();
-	void displayDetail();
+	/*void displayDetail();
 	void vacateRoom(int rno);
-	void displayAvailable(Room r[6]);
+	void displayAvailable(Room r[6]);*/
 	int getsp() {
 		return this->noOfroom;
 	}
@@ -190,6 +190,7 @@ private:
 	string custName;
 	string custAddress;
 	int custID;
+	int custAge;
 	string custPhone;
 	string custCMND;
 	string checkInTime;
@@ -221,6 +222,9 @@ public:
 		return custName;
 
 	}
+	int getAge() {
+		return custAge;
+	}
 	string getcustAddress() {
 		return custAddress;
 		
@@ -241,15 +245,15 @@ public:
 
 	}
 	void setCustID(int id) {
-		custID == id;
+		custID = id;
 
 	}
 	void setCname(string newname) {
-		custName== newname;
+		custName= newname;
 
 	}
 	void setAddress(string add) {
-		custAddress == add;
+		custAddress = add;
 
 	}
 	void setphone(string phone) {
@@ -258,7 +262,9 @@ public:
 	void setCMND(string CMND) {
 		custCMND=CMND;
 	}
-	
+	void setAge(int age) {
+		custAge = age;
+	}
 
 };
 Customer::Customer()
@@ -281,15 +287,18 @@ void Customer::setData()
 	this->checkInTime = dt;
 
 	rewind(stdin);
-	cout << "\nNhap Ten:";
+	cout << "\n\n\tNhap Ten:";
 	getline(cin, custName);
 	rewind(stdin);
-	cout << "\nNhap Dia Chi :";
+	cout << "\n\tNhap Tuoi:";
+	cin >> custAge;
+	rewind(stdin);
+	cout << "\n\tNhap Dia Chi :";
 	getline(cin, custAddress);
 	rewind(stdin);
-	cout << "\nNhap So Dien Thoat :";
+	cout << "\n\tNhap So Dien Thoai :";
 	getline(cin, custPhone);
-	cout << "\nNhap So Chung Minh Nhan Dan : ";
+	cout << "\n\tNhap So Chung Minh Nhan Dan : ";
 	getline(cin, custCMND);
 	this->custID;
 }
@@ -299,10 +308,12 @@ void Customer::printCustomer()
 	time_t now = time(0);
 	string dt = ctime(&now);
 	this->CheckOutTime = dt;
-
+	cout << "\n\n-----------------------------------------------------------------\n\n";
 	cout << "ID :: " << custID << endl;
 
 	cout << "Ho Va Ten :: " << custName << endl;
+
+	cout << "Tuoi :: " << custAge << endl;
 
 	cout << "Dia Chi :: " << custAddress << endl;
 
@@ -363,8 +374,11 @@ public:
 	Dish d;
 public:
 	FoodCustomer();
+
 	void allocateDish(Dish d1);
+
 	float viewTotalBill();
+
 	void printCustomer();
 
 };
@@ -421,7 +435,7 @@ Dish Food::getDish(string dnam)
 		}
 	}
 }
-int BookRoom(LIST* l, int r) {
+int CheckRoom(LIST* l, int r) {
 	int n = 0;
 	for (NODE* k = l->pHead; k != NULL; k = k->pNext)
 	{
@@ -445,31 +459,9 @@ private:
 	string acc="baitaplon";
 	string pss="123";
 public:
-
 	Food food;
 	Room room[5];
-
-
-	
 public:
-
-	Hotel(string hname, string add)
-	{
-		this->hotelName = hname;
-		this->hotelAddress = add;
-		this->acc = "nam";
-		this->pss = "123";
-	}
-	string getacc() {
-		return acc;
-	}
-	string getpss() {
-		return pss;
-
-	}
-
-	
-
 	void setHotel(Food f, Room rs[5]);
 	Room getRoom(int rno);
 	Dish getDish(string dsh);
@@ -485,6 +477,21 @@ public:
 	void Printcus(LIST* l);
 	void PrintBill(LIST* l);
 	void callepl(LIST* l);
+	int CheckRoom(LIST* l, int r);
+
+	Hotel(string hname, string add)
+	{
+		this->hotelName = hname;
+		this->hotelAddress = add;
+
+	}
+	string getacc() {
+		return acc;
+	}
+	string getpss() {
+		return pss;
+
+	}
 };
 void Hotel::setHotel(Food f, Room rs[5])
 {
@@ -524,7 +531,7 @@ void Hotel::displayAvailble() {
 	const int NumbWidth = 25;
 	const int RentWidth = 20;
 	const int SPWidth = 20;
-	cout << "\n\n-------------------------------------------------------Chi Tiet Phong-----------------------------------------------------\n\n";
+	cout << "\n\n-------------------------------------------------------Chi Tiet Phong---------------------------------------------------\n\n";
 	cout << endl;
 
 	cout << "\n\n +----+--------------------------+--------------------------+---------------------+---------------------+";
@@ -566,6 +573,21 @@ void Hotel::displayMenu()
 	cout << "\n +--------------------------+--------------------------+--------------------------+--------------------------+";
 	cout << "\n\n";
 }
+int Hotel::CheckRoom(LIST* l, int r) {
+	int n = 0;
+	for (NODE* k = l->pHead; k != NULL; k = k->pNext)
+	{
+
+		if (k->data->getsp() == r) {
+
+			cout << "\nPhong Nay Da Duoc Dat ";
+			pressanykey();
+			n = 1;
+		}
+
+	}
+	return n;
+}
 void Hotel::bookRoom(LIST* l, int r)
 {
 	int i, c = 0;
@@ -579,7 +601,7 @@ bk:
 			st1:
 				cout << "\nNhap so phong 100-200: ";
 				cin >> sphong;
-				c = BookRoom(l, sphong);
+				c = CheckRoom(l, sphong);
 				if (c == 1) {
 					system("cls");
 					cout << "\nVui Long Nhap lai !";
@@ -598,7 +620,7 @@ bk:
 			st2:
 				cout << "\nNhap so phong 200-300: ";
 				cin >> sphong;
-				c = BookRoom(l, sphong);
+				c = CheckRoom(l, sphong);
 				if (c == 1) {
 					system("cls");
 					cout << "\nVui Long Nhap lai !";
@@ -616,7 +638,7 @@ bk:
 			st3:
 				cout << "\nNhap so phong 300-400: ";
 				cin >> sphong;
-				c = BookRoom(l, sphong);
+				c = CheckRoom(l, sphong);
 				if (c == 1) {
 					system("cls");
 					cout << "\nVui Long Nhap Lai !\n";
@@ -634,7 +656,7 @@ bk:
 
 				cout << "\nNhap so phong 400-500: ";
 				cin >> sphong;
-				c = BookRoom(l, sphong);
+				c = CheckRoom(l, sphong);
 				if (c == 1) {
 					system("cls");
 					cout << "\nVui Long Nhap Lai !\n";
@@ -652,7 +674,7 @@ bk:
 			st5:
 				cout << "\nNhap so phong 500-600: ";
 				cin >> sphong;
-				c = BookRoom(l, sphong);
+				c = CheckRoom(l, sphong);
 				if (c == 1) {
 					system("cls");
 					cout << "\nVui Long Nhap lai";
@@ -761,13 +783,13 @@ void Hotel::Displayds(LIST* l) {
 	cout << "\n\t\t\t    DANH SACH KHACH HANG DA DAT PHONG";
 	cout << "\n\t\t\t   -----------------------";
 	cout << "\n\n +---------+--------------------------+--------------------------+---------------------+---------------------+";
-	cout << "\n | ID.     |       Ten Khach Hang     |         Dia Chi          |      Loai Phong     |    So Dien Thoai    |";
+	cout << "\n | ID.     |       Ten Khach Hang     |          Tuoi            |       Loai Phong    |       So CMND       |";
 	cout << "\n +---------+--------------------------+--------------------------+---------------------+---------------------+";
 	for (NODE* k = l->pHead; k != NULL; k = k->pNext)
 	{
 		cout << "\n |" << setw(NoWidth) << setfill(separator) << k->data->getCustID() << " |";
 		cout << setw(GuestWidth) << setfill(separator) << k->data->getcustname() << " |";
-		cout << setw(AddressWidth) << setfill(separator) << k->data->getcustPhone() << " |";
+		cout << setw(AddressWidth) << setfill(separator) << k->data->getAge() << " |";
 		cout << setw(RoomWidth) << setfill(separator) << k->data->getsp() << " |";
 		cout << setw(ContactNoWidth) << setfill(separator) << k->data->getcustCMND() << " |";
 
@@ -786,7 +808,7 @@ void Hotel::DangNhap() {
 	while (tk != acc || mk != pss) {
 		system("cls");
 		cout << endl;
-		cout << setw(70) << "NHAP LAI TAI KHOAN VA MAT KHAU \n";
+		cout << setw(80) << "MAT KHAU HOAC TAI KHOAN SAI VUI LONG NHAP LAI \n";
 		cout << setw(60) << "NHAP TAI KHOAN : ";
 		getline(cin, tk);
 		cout << setw(59) << "NHAP MAT KHAU  :";
@@ -812,7 +834,7 @@ void Hotel::DangNhap() {
 void Hotel::Printcus(LIST* l) {
 search:
 	int rn;
-	cout << "\nNhap So Phong Can Xem Thong Tin";
+	cout << "\nNhap So Phong Can Xem Thong Tin: ";
 	cin >> rn;
 	for (NODE* k = l->pHead; k != NULL; k = k->pNext)
 	{
@@ -820,6 +842,7 @@ search:
 			system("cls");
 			k->data->printCustomer();
 			k->data->viewTotalBill();
+			break;
 			pressanykey();
 			system("cls");
 			textcolor(11);
@@ -836,7 +859,7 @@ search:
 	search:
 		int rn;
 		int f = 0;
-		cout << "\n\t\t\tNhap So Phong Cua Ban ";
+		cout << "\n\t\t\tNhap So Phong Cua Ban: ";
 		cin >> rn;
 		for (NODE* k = l->pHead; k != NULL; k = k->pNext)
 		{

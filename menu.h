@@ -44,10 +44,7 @@ dangnhap:
 		system("pause");
 	}
 	else {
-		/*RestaurantCustomer *rs= new RestaurantCustomer;
-		Doc_1_Thong_Tin_sv(filein,rs);
-		NODE* p = KhoiTaoNode(rs);
-		ThemVaoCuoi(l, p);*/
+		Doc_file_Thong_Tin_sv(filein, l);
 
 	}
 	textcolor(11);
@@ -97,7 +94,7 @@ dangnhap:
 			else if (sl == 2) {
 				system("cls");
 				textcolor(14);
-				cout << "Nhap Thong Tin Khach Hang\n";
+				cout << "\tNhap Thong Tin Khach Hang\n";
 				FoodCustomer* Customer = new FoodCustomer();
 				NODE* p = KhoiTaoNode(Customer);
 				Customer->setData();
@@ -128,7 +125,7 @@ dangnhap:
 				{
 					int b = 0;
 				vacate:
-					cout << "Nhap So Phong Can Don\n";
+					cout << "Nhap So Phong Can Don: \n";
 					cin >> rno;
 					for (NODE* k = l->pHead; k != NULL; k = k->pNext)
 					{
@@ -182,7 +179,7 @@ dangnhap:
 						if (k->data->getsp() == od) {
 
 							rewind(stdin);
-							cout << "Nhap So Thu Tu Mon An Ban Muon Dat\n";
+							cout << "Nhap So Thu Tu Mon An Ban Muon Dat: \n";
 							getline(cin, dname);
 							ht->takeOrder(dname);
 							d2 = ht->getDish(dname);
@@ -310,21 +307,24 @@ dangnhap:
 				textcolor(11);
 				goto level1;
 			}
-			else if (sl == 6) {
+			else if (sl == 0) {
 
 				exit(0);
 			}
-			else if (sl == 10) {
+			else if (sl == 6) {
+			textcolor(7);
 			if (l->pHead == NULL) {
 				cout << "\n\t\tDanh Sach Trong Khong Co Thong Tin De Hien Thi";
 				pressanykey();
 				system("cls");
+				textcolor(11);
 				goto level1;
 			}
 			else {
 				ht->Printcus(l);
 				pressanykey();
 				system("cls");
+				textcolor(11);
 				goto level1;
 			}
 			}

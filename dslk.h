@@ -31,6 +31,7 @@ void Ghi_1_Thong_Tin_customer(FoodCustomer* cs) {
 
 			customer << cs->getCustID() << ",";
 			customer << cs->getcustname() << ",";
+			customer << cs->getAge() << ",";
 			customer << cs->getcustAddress() << ",";
 			customer << cs->getcustPhone() << ",";
 			customer << cs->getcustCMND() << ",";
@@ -40,7 +41,7 @@ void Ghi_1_Thong_Tin_customer(FoodCustomer* cs) {
 			customer << cs->d.dishName << ",";
 			customer << cs->d.dishType << ",";
 			customer << cs->d.price << ",";
-			customer << cs->bill;
+			customer << cs->r.rent << ",";
 			customer.seekp(1, 1);
 			customer << endl;
 			cout << "Da Dat Phong & Da Luu Thong Tin";
@@ -57,6 +58,7 @@ void Ghi_1_Thong_Tin_customer(FoodCustomer* cs) {
 
 			customer << cs->getCustID() << ",";
 			customer << cs->getcustname() << ",";
+			customer << cs->getAge() << ",";
 			customer << cs->getcustAddress() << ",";
 			customer << cs->getcustPhone() << ",";
 			customer << cs->getcustCMND() << ",";
@@ -66,8 +68,8 @@ void Ghi_1_Thong_Tin_customer(FoodCustomer* cs) {
 			customer << cs->d.dishName << ",";
 			customer << cs->d.dishType << ",";
 			customer << cs->d.price << ",";
-			customer << cs->bill;
-			customer.seekp(1, 1);
+
+			customer << cs->r.rent << ",";
 			customer << endl;
 			cout << "Da Dat Phong & Da Luu Thong Tin";
 		}
@@ -80,55 +82,81 @@ void Ghi_1_Thong_Tin_customer(FoodCustomer* cs) {
 }
 
 
-void Doc_1_Thong_Tin_sv(ifstream& filein, FoodCustomer* rs) {
+
+int Dem() {
+	int numLines = 0;
+	ifstream in("Customer.txt");
+	//while ( ! in.eof() )
+	while (in.good())
+	{
+		std::string line;
+		std::getline(in, line);
+		++numLines;
+	}
+	return numLines;
+}
+void Doc_file_Thong_Tin_sv(ifstream& filein, LIST* l) {
 	int id;
 	string n;
+	int t;
+	int stt;
+	string r;
 	string a;
 	string p;
 	string C;
-	filein >> id;
-	rs->setCustID(id);
-	filein.seekg(1, 1);
-	getline(filein, n, ',');
-	rs->setCname(n);
-	getline(filein, a, ',');
-	rs->setAddress(a);
-	getline(filein, p, ',');
-	rs->setphone(p);
-	getline(filein, C, ',');
-	rs->setCMND(C);
-	filein >> rs->r.STT;
-	filein.seekg(1, 1);
-	filein >> rs->r.noOfroom;
-	filein.seekg(1, 1);
-	getline(filein, rs->r.roomType, ',');
-	getline(filein, rs->d.dishName, ',');
-	getline(filein, rs->d.dishType, ',');
-	filein >> rs->bill;
-	filein.seekg(1, 1);
-	string temp;
-	getline(filein, temp);
+	double nb;
+	int dem = Dem();
+	cout << n;
+	for (int i = 0; i < dem - 1; i++) {
+		FoodCustomer* rs = new FoodCustomer;
+		NODE* x = KhoiTaoNode(rs);
+		filein >> id;
+		rs->setCustID(id);
+		filein.seekg(1, 1);
 
+		getline(filein, n, ',');
+		rs->setCname(n);
+
+		filein >> t;
+		rs->setAge(t);
+		filein.seekg(1, 1);
+
+		getline(filein, a, ',');
+		rs->setAddress(a);
+
+		getline(filein, p, ',');
+		rs->setphone(p);
+
+		getline(filein, C, ',');
+		rs->setCMND(C);
+
+		filein >> rs->r.STT;
+		filein.seekg(1, 1);
+
+
+		filein >> rs->r.noOfroom;
+		filein.seekg(1, 1);
+
+		getline(filein, rs->r.roomType, ',');
+
+		getline(filein, rs->d.dishName, ',');
+
+
+		getline(filein, rs->d.dishType, ',');
+
+
+		filein >> rs->d.price;
+		filein.seekg(1, 1);
+
+		filein >> rs->r.rent;
+		filein.seekg(1, 1);
+
+
+		string temp;
+		getline(filein, temp);
+		ThemVaoCuoi(l, x);
+	}
 }
-
-//void Doc_Danh_Sach_Sinh_Vien(ifstream& filein, LIST* l) {
-//	while (!filein.eof()) {
-//		//b??c 1 ??c thông tin ;
-//		RestaurantCustomer* rs = new RestaurantCustomer;
-//		NODE* n = KhoiTaoNode(rs);
-//		Doc_1_Thong_Tin_sv(filein, rs);
-//		//b??c 2 : kh?i t?o node sv
-//		//b??c 3 : thêm sinh viên vào dslk ??n các sinh viên ;
-//		ThemVaoCuoi(l, n);
-//
-//		if (filein.eof()) {
-//			return;
-//		}
-//	}
-//
-//
-//
-//}
 
 void XoaNodeCoKhoaBatKy(LIST* l, int x) {
 
@@ -140,9 +168,9 @@ void XoaNodeCoKhoaBatKy(LIST* l, int x) {
 		XoaCuoi(l);
 		return;
 	}
-	NODE* g = new NODE; //node g la node tro den node nam truoc node can xoa
+	NODE* g = new NODE; 
 	for (NODE* k = l->pHead; k != NULL; k = k->pNext) {
-		//phat hien phan tu can xoa
+		
 		if (k->data->getsp() == x) {
 			g->pNext = k->pNext;
 			delete k;

@@ -191,6 +191,7 @@ private:
 	string custName;
 	string custAddress;
 	int custID;
+	
 	string custPhone;
 	string custCMND;
 	string checkInTime;
