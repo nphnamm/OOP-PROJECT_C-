@@ -28,18 +28,19 @@ void pressanykey() {
 	getch();
 	system("cls");
 }
+//c?u trúc node
 struct NODE {
 	FoodCustomer* data;
 	NODE* pNext;
 };
-//
+//c?u trúc ds node
 struct LIST {
 	NODE* pHead;
 	NODE* pTail;
 
 
 };
-// KH?i t?o c?u trúc danh sách 
+//khoi tao danh sach node
 void KhoiTaoDSLK(LIST*& l) {
 	l = new LIST;
 	l->pHead = NULL;
@@ -47,6 +48,7 @@ void KhoiTaoDSLK(LIST*& l) {
 
 
 }
+//khoi tao node
 NODE* KhoiTaoNode(FoodCustomer* x) {
 
 	NODE* p = new NODE;
@@ -60,7 +62,7 @@ NODE* KhoiTaoNode(FoodCustomer* x) {
 	return p;
 
 }
-
+//them node vao cuoi 
 void ThemVaoCuoi(LIST*& l, NODE* p) {
 	if (l->pHead == NULL) {
 		l->pHead = l->pTail = p;
@@ -75,6 +77,7 @@ void ThemVaoCuoi(LIST*& l, NODE* p) {
 
 	}
 }
+// xoa node dau 
 void XoaDau(LIST* l) {
 	if (l->pHead == NULL) {
 		return;
@@ -85,6 +88,7 @@ void XoaDau(LIST* l) {
 
 
 }
+// xoa node cuoi
 void XoaCuoi(LIST* l) {
 
 	NODE* p;
@@ -98,6 +102,7 @@ void XoaCuoi(LIST* l) {
 		}
 	}
 }
+//chinh mau chu
 void textcolor(int color) {
 	
 	
@@ -191,7 +196,7 @@ private:
 	string custName;
 	string custAddress;
 	int custID;
-	
+	int custAge;
 	string custPhone;
 	string custCMND;
 	string checkInTime;
@@ -200,8 +205,14 @@ private:
 	string CheckOutTime;
 
 public:
+	virtual int getsp() {
+		return 0;
+	}
 	int getCustID() {
 		return custID;
+	}
+	int getAge() {
+		return custAge;
 	}
 
 	string getcustname() {
@@ -228,15 +239,15 @@ public:
 
 	}
 	void setCustID(int id) {
-		custID == id;
+		custID = id;
 
 	}
 	void setCname(string newname) {
-		custName == newname;
+		this->custName = newname;
 
 	}
 	void setAddress(string add) {
-		custAddress == add;
+		custAddress = add;
 
 	}
 	void setphone(string phone) {
@@ -245,6 +256,13 @@ public:
 	void setCMND(string CMND) {
 		custCMND = CMND;
 	}
+	void setAge(int age) {
+		custAge = age;
+	}
+	void setsp(	int spnew) {
+		sp = spnew;
+	}
+
 
 	Customer()
 	{
@@ -267,15 +285,18 @@ public:
 		this->checkInTime = dt;
 
 		rewind(stdin);
-		cout << "\nNhap Ten:";
+		cout << "\n\n\tNhap Ten:";
 		getline(cin, custName);
 		rewind(stdin);
-		cout << "\nNhap Dia Chi :";
+		cout << "\n\tNhap Tuoi:";
+		cin >> custAge;
+		rewind(stdin);
+		cout << "\n\tNhap Dia Chi :";
 		getline(cin, custAddress);
 		rewind(stdin);
-		cout << "\nNhap So Dien Thoai :";
+		cout << "\n\tNhap So Dien Thoai :";
 		getline(cin, custPhone);
-		cout << "\nNhap So Chung Minh Nhan Dan : ";
+		cout << "\n\tNhap So Chung Minh Nhan Dan : ";
 		getline(cin, custCMND);
 		this->custID;
 	}
@@ -286,11 +307,11 @@ public:
 		string dt = ctime(&now);
 		this->CheckOutTime = dt;
 		ifstream filein;
-		filein.open("Customer.txt", ios_base::in);
+		cout << "\n\n-----------------------------------------------------------------\n\n";
 		cout << "ID :: " << custID << endl;
 
 		cout << "Ho Va Ten :: " << custName << endl;
-
+		cout << "Tuoi :: " << custAge << endl;
 		cout << "Dia Chi :: " << custAddress << endl;
 
 		cout << "So Dien Thoai :: " << custPhone << endl;
@@ -313,7 +334,7 @@ public:
 	
 
 };
-int Customer::id = 99;
+int Customer::id = 100;
 
 
 class RoomCustomer : public Customer
@@ -346,8 +367,14 @@ public:
 		cout << "Hoa Don :: " << this->bill;
 		return bill;
 	}
-	
+	int getsp() {
+		return this->r.noOfroom;
 
+	}
+	
+	void setbill(double nbill) {
+		this->bill = nbill;
+	}
 
 };
 
@@ -379,6 +406,10 @@ public:
 		cout << "Hoa Don Cua Ban La :: " << (size_t)this->bill << endl;
 		return this->bill;
 	}
+	float totalbill() {
+		this->bill = d.price + r.rent;
+		return this->bill;
+	}
 	void printCustomer()
 	{
 
@@ -388,6 +419,9 @@ public:
 		cout << "Loai Mon An :: " << d.dishType << endl;
 		cout << "Gia Mon An::" << d.price << endl;
 
+	}
+	void setbill(double nbill) {
+		this->bill = nbill;
 	}
 
 };
@@ -730,22 +764,20 @@ public:
 		const int ContactNoWidth = 20;
 		cout << "\n\t\t\t\t    DANH SACH KHACH HANG DA DAT PHONG";
 		cout << "\n\t\t\t\t   -----------------------------------";
+		
 		cout << "\n\n +---------+--------------------------+--------------------------+---------------------+---------------------+";
-		cout << "\n | ID.     |         Guest Name       |         Address          |        Room Type    |    Contact No.      |";
+		cout << "\n | ID.     |       Ten Khach Hang     |          Tuoi            |       So Phong      |       So CMND       |";
 		cout << "\n +---------+--------------------------+--------------------------+---------------------+---------------------+";
 		for (NODE* k = l->pHead; k != NULL; k = k->pNext)
 		{
-
-
 			cout << "\n |" << setw(NoWidth) << setfill(separator) << k->data->getCustID() << " |";
 			cout << setw(GuestWidth) << setfill(separator) << k->data->getcustname() << " |";
-			cout << setw(AddressWidth) << setfill(separator) << k->data->getcustPhone() << " |";
+			cout << setw(AddressWidth) << setfill(separator) << k->data->getAge() << " |";
 			cout << setw(RoomWidth) << setfill(separator) << k->data->getsp() << " |";
 			cout << setw(ContactNoWidth) << setfill(separator) << k->data->getcustCMND() << " |";
 
 		}
 		cout << "\n +---------+--------------------------+--------------------------+---------------------+---------------------+";
-		getchar();
 		getchar();
 	}
 	void Printcus(LIST* l) {
@@ -759,16 +791,16 @@ public:
 				system("cls");
 				k->data->printCustomer();
 				k->data->viewTotalBill();
+				
 				pressanykey();
+
 				system("cls");
 				textcolor(11);
 
 			}
-			else {
-				cout << "\n\t\t\tVui Long Nhap Lai!";
-				goto search;
-			}
+			
 		}
+		return;
 	}
 	void callepl(LIST *l) {
 	search:
@@ -789,23 +821,23 @@ public:
 			goto search;
 		}
 		
-
+		return;
 	}
 
 	void login() {
 		string  tk, mk;
-		cout << setw(60) << "Nhap Tai Khoan : ";
+		cout << setw(60) << "NHAP TAI KHOAN : ";
 		getline(cin, tk);
-		cout << setw(59) << "Nhap Mat khau  :";
+		cout << setw(59) << "NHAP MAT KHAU  :";
 		getline(cin, mk);
 		while (tk != acc || mk != pass) {
 			system("cls");
 			cout << endl;
-			cout << setw(70) << "Nhap Lai Tai Khoan va Mat Khau \n";
-			cout << setw(60) << "Nhap Tai Khoan: ";
+			cout << setw(80) << "MAT KHAU HOAC TAI KHOAN SAI VUI LONG NHAP LAI \n";
+			cout << setw(60) << "NHAP TAI KHOAN: ";
 			getline(cin, tk);
 
-			cout << setw(60) << "Nhap Mat khau :";
+			cout << setw(60) << "NHAP MAT KHAU :";
 			getline(cin, mk);
 
 		}
@@ -829,6 +861,7 @@ void Ghi_1_Thong_Tin_customer(FoodCustomer* cs) {
 
 			customer << cs->getCustID() << ",";
 			customer << cs->getcustname() << ",";
+			customer << cs->getAge() << ",";
 			customer << cs->getcustAddress() << ",";
 			customer << cs->getcustPhone() << ",";
 			customer << cs->getcustCMND() << ",";
@@ -838,7 +871,7 @@ void Ghi_1_Thong_Tin_customer(FoodCustomer* cs) {
 			customer << cs->d.dishName << ",";
 			customer << cs->d.dishType << ",";
 			customer << cs->d.price << ",";
-			customer << cs->bill;
+			customer << cs->r.rent << ",";
 			customer.seekp(1, 1);
 			customer << endl;
 			cout << "Da Dat Phong & Da Luu Thong Tin";
@@ -855,6 +888,7 @@ void Ghi_1_Thong_Tin_customer(FoodCustomer* cs) {
 
 			customer << cs->getCustID() << ",";
 			customer << cs->getcustname() << ",";
+			customer << cs->getAge() << ",";
 			customer << cs->getcustAddress() << ",";
 			customer << cs->getcustPhone() << ",";
 			customer << cs->getcustCMND() << ",";
@@ -864,8 +898,8 @@ void Ghi_1_Thong_Tin_customer(FoodCustomer* cs) {
 			customer << cs->d.dishName << ",";
 			customer << cs->d.dishType << ",";
 			customer << cs->d.price << ",";
-			customer << cs->bill;
-			customer.seekp(1, 1);
+			
+			customer << cs->r.rent << ",";
 			customer << endl;
 			cout << "Da Dat Phong & Da Luu Thong Tin";
 		}
@@ -877,54 +911,81 @@ void Ghi_1_Thong_Tin_customer(FoodCustomer* cs) {
 
 }
 
-
-void Doc_1_Thong_Tin_sv(ifstream& filein, FoodCustomer* rs) {
+int Dem() {
+	int numLines = 0;
+	ifstream in("Customer.txt");
+	//while ( ! in.eof() )
+	while (in.good())
+	{
+		std::string line;
+		std::getline(in, line);
+		++numLines;
+	}
+	return numLines;
+}
+void Doc_file_Thong_Tin_sv(ifstream& filein, LIST* l) {
 	int id;
 	string n;
+	int t;
+	int stt;
+	string r;
 	string a;
 	string p;
 	string C;
-	filein >> id;
-	rs->setCustID(id);
-	filein.seekg(1, 1);
-	getline(filein, n, ',');
-	rs->setCname(n);
-	getline(filein, a, ',');
-	rs->setAddress(a);
-	getline(filein, p, ',');
-	rs->setphone(p);
-	getline(filein, C, ',');
-	rs->setCMND(C);
-	filein >> rs->r.STT;
-	filein.seekg(1, 1);
-	filein >> rs->r.noOfroom;
-	filein.seekg(1, 1);
-	getline(filein, rs->r.roomType, ',');
-	getline(filein, rs->d.dishName, ',');
-	getline(filein, rs->d.dishType, ',');
-	filein >> rs->bill;
-	filein.seekg(1, 1);
-	string temp;
-	getline(filein, temp);
+	double nb;
+	int dem = Dem();
+	cout << n;
+	for (int i = 0; i < dem-1; i++) {
+		FoodCustomer* rs = new FoodCustomer;
+		NODE* x = KhoiTaoNode(rs);
+		filein >> id;
+		rs->setCustID(id);
+		filein.seekg(1, 1);
 
-}
-void Doc_Danh_Sach_Sinh_Vien(ifstream& filein, LIST* l) {
-	while (!filein.eof()) {
+		getline(filein, n, ',');
+		rs->setCname(n);
+
+		filein >> t;
+		rs->setAge(t);
+		filein.seekg(1, 1);
+
+		getline(filein, a, ',');
+		rs->setAddress(a);
+
+		getline(filein, p, ',');
+		rs->setphone(p);
+
+		getline(filein, C, ',');
+		rs->setCMND(C);
+		
+		filein >> rs->r.STT;
+		filein.seekg(1, 1);
 	
-		FoodCustomer* fc = new FoodCustomer;
-		NODE* n = KhoiTaoNode(fc);
-		Doc_1_Thong_Tin_sv(filein, fc);
+
+		filein >> rs->r.noOfroom;
+		filein.seekg(1, 1);
+		
+		getline(filein, rs->r.roomType, ',');
 	
-		ThemVaoCuoi(l, n);
-		return;
-		if (filein.eof()) {
-			
-		}
+		getline(filein, rs->d.dishName, ',');
+		
+
+		getline(filein, rs->d.dishType, ',');
+	
+
+		filein >> rs->d.price;
+		filein.seekg(1, 1);
+		
+		filein >> rs->r.rent;
+		filein.seekg(1, 1);
+		
+		
+		string temp;
+		getline(filein, temp);
+		ThemVaoCuoi(l, x);
 	}
-
-
-
 }
+
 void XoaNodeCoKhoaBatKy(LIST* l, int x) {
 
 	if (l->pHead->data->getsp() == x) {
@@ -1011,10 +1072,8 @@ void Menu() {
 	else {
 
 		
-		/*FoodCustomer* fc = new FoodCustomer;
-		NODE* n = KhoiTaoNode(fc);
-		Doc_1_Thong_Tin_sv(filein, fc);
-		ThemVaoCuoi(l, n);*/
+		Doc_file_Thong_Tin_sv(filein, l);
+
 	}
 
 
@@ -1189,7 +1248,7 @@ void Menu() {
 			}
 			}
 			else if (sl == 7) {
-			textcolor(10);
+			textcolor(15);
 			if (l->pHead == 0)
 			{
 				cout << "\n\n-----------------------------------------------------------------------------------\n\n";
