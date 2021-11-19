@@ -9,7 +9,7 @@ void Menu() {
 	Room r2;
 	string dname;
 	Dish d2;
-	Hotel* ht = ht->getHotel();
+	Hotel* ht = new Hotel("Khach San 5*", "THu Duc");
 	Dish d[8] = {
 		Dish("1","Bua Sang Thuong",100000,"Do An"),
 		Dish("2","Bua Sang Buffet",200000,"Do An"),
@@ -28,15 +28,15 @@ void Menu() {
 	ht->food = fd;
 
 	Room rm[5] = {
-	   Room("Phong Don",1,300000,1,"100-199"),
-	   Room("Phong Doi",2,400000,2,"200-299"),
-	   Room("Phong Ba",3,500000,3,"300-399"),
-	   Room("Phong Deluxe ",2,600000,4,"400-499"),
-	   Room("Phong Suit",2,700000,5,"500-599"),
+		   Room("Phong Don",1,300000,1,"100-199"),
+		   Room("Phong Doi",2,400000,2,"200-299"),
+		   Room("Phong Ba",3,500000,3,"300-399"),
+		   Room("Phong Deluxe ",2,600000,4,"400-499"),
+		   Room("Phong Suit",2,700000,5,"500-599"),
 	};
 	ht->setHotel(fd, rm);
 dangnhap:
-	DangNhap();
+	ht->DangNhap();
 	ifstream filein;
 	filein.open("Customer.txt", ios::in);
 	if (filein.fail()) {
@@ -44,19 +44,17 @@ dangnhap:
 		system("pause");
 	}
 	else {
-		/*RestaurantCustomer *rs= new RestaurantCustomer;
-		Doc_1_Thong_Tin_sv(filein,rs);
-		NODE* p = KhoiTaoNode(rs);
-		ThemVaoCuoi(l, p);*/
+		Doc_file_Thong_Tin_sv(filein, l);
 
 	}
 	textcolor(11);
 	while (true)
 	{
 		system("cls");
-
 	level1:	cout << "\t\t\t°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°\n";
+		cout << "\t\t\t°\t                           \t\t\t\t°\n";
 		cout << "\t\t\t°\t\tCHUONG TRINH QUAN LY KHACH SAN \t\t\t°\n";
+		cout << "\t\t\t°\t                           \t\t\t\t°\n";
 		cout << "\t\t\t°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°\n";
 		cout << "\t\t\t°\t	1.Danh Sach Phong Dang Co\t\t\t°\n";
 		cout << "\t\t\t°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°\n";
@@ -68,13 +66,15 @@ dangnhap:
 		cout << "\t\t\t°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°\n";
 		cout << "\t\t\t°\t	5.Dat Do An              \t\t\t°\n";
 		cout << "\t\t\t°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°\n";
-		cout << "\t\t\t°\t	6.In Hoa Don             \t\t\t°\n";
+		cout << "\t\t\t°\t	6.Xem Thong Tin Mot Khach Hang\t\t\t°\n";
 		cout << "\t\t\t°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°\n";
-		cout << "\t\t\t°\t	7.Khong Hai Long         \t\t\t°\n";
+		cout << "\t\t\t°\t	7.Danh Sach Phong Da Dat\t\t\t°\n";
 		cout << "\t\t\t°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°\n";
-		cout << "\t\t\t°\t	8.Give FeedBack          \t\t\t°\n";
+		cout << "\t\t\t°\t	8.In Hoa Don             \t\t\t°\n";
 		cout << "\t\t\t°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°\n";
-		cout << "\t\t\t°\t	9.Danh Sach Phong Da Dat\t\t\t°\n";
+		cout << "\t\t\t°\t	9.Khong Hai Long         \t\t\t°\n";
+		cout << "\t\t\t°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°\n";
+		cout << "\t\t\t°\t	10.Give FeedBack          \t\t\t°\n";
 		cout << "\t\t\t°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°\n";
 		cout << "\t\t\t°\t	0.Thoat.                 \t\t\t°\n";
 		cout << "\t\t\t°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°\n";
@@ -94,10 +94,10 @@ dangnhap:
 			else if (sl == 2) {
 				system("cls");
 				textcolor(14);
-				cout << "Nhap Thong Tin Khach Hang\n";
-				FoodCustomer* room = new FoodCustomer();
-				NODE* p = KhoiTaoNode(room);
-				room->setData();
+				cout << "\tNhap Thong Tin Khach Hang\n";
+				FoodCustomer* Customer = new FoodCustomer();
+				NODE* p = KhoiTaoNode(Customer);
+				Customer->setData();
 				system("cls");
 				ThemVaoCuoi(l, p);
 				ht->displayAvailble();
@@ -105,8 +105,8 @@ dangnhap:
 				cin >> rno;
 				ht->bookRoom(l, rno);
 				r2 = ht->getRoom(rno);
-				room->allocateRoom(r2);
-				Ghi_1_Thong_Tin_customer(room);
+				Customer->allocateRoom(r2);
+				Ghi_1_Thong_Tin_customer(Customer);
 				pressanykey();
 				system("cls");
 				textcolor(11);
@@ -125,7 +125,7 @@ dangnhap:
 				{
 					int b = 0;
 				vacate:
-					cout << "Nhap So Phong Can Don\n";
+					cout << "Nhap So Phong Can Don: \n";
 					cin >> rno;
 					for (NODE* k = l->pHead; k != NULL; k = k->pNext)
 					{
@@ -166,8 +166,10 @@ dangnhap:
 					goto level1;
 				}
 				else {
-					o = 1;
+				
 					rewind(stdin);
+					
+					order:
 					ht->displayMenu();
 					int od;
 					cout << "\nNhap Phong Muon Order ";
@@ -177,31 +179,31 @@ dangnhap:
 						if (k->data->getsp() == od) {
 
 							rewind(stdin);
-							cout << "Nhap So Thu Tu Mon An Ban Muon Dat\n";
+							cout << "Nhap So Thu Tu Mon An Ban Muon Dat: \n";
 							getline(cin, dname);
 							ht->takeOrder(dname);
 							d2 = ht->getDish(dname);
 							k->data->allocateDish(d2);
 							Ghi_1_Thong_Tin_customer(k->data);
+							textcolor(11);
 							break;
 
 						}
+						else {
+							cout << "\Vui Long Nhap Lai";
+							system("cls");
+							goto order;
+						}
 
 					}
-
+					textcolor(11);
 				}
 				pressanykey();
 				system("cls");
-
-				if (o == 0)
-				{
-					cout << "\n\n-----------------------------------------------------------------------------------------\n\n";
-					cout << "Khong Co Mon An Nao Giong Vay";
-				}
 				textcolor(11);
 				goto level1;
 			}
-			else if (sl == 6) {
+			else if (sl == 8) {
 				textcolor(190);
 				if (l->pHead == NULL)
 				{
@@ -250,7 +252,7 @@ dangnhap:
 					goto level1;
 				}
 			}
-			else if (sl == 7) {
+			else if (sl == 9) {
 				textcolor(4);
 				if (l->pHead == NULL)
 
@@ -264,8 +266,7 @@ dangnhap:
 
 				else
 				{
-					Employee e;
-					e.performDuty();
+					ht->callepl(l);
 					pressanykey();
 
 				}
@@ -273,7 +274,7 @@ dangnhap:
 				textcolor(11);
 				goto level1;
 			}
-			else if (sl == 8) {
+			else if (sl == 10) {
 				if (l->pHead == NULL)
 				{
 					cout << "\n\n-----------------------------------------------------------------------------------\n\n";
@@ -290,7 +291,7 @@ dangnhap:
 				textcolor(11);
 				goto level1;
 			}
-			else if (sl == 9) {
+			else if (sl == 7) {
 				textcolor(3);
 				if (l->pHead == 0)
 				{
@@ -300,7 +301,7 @@ dangnhap:
 				}
 				else {
 					system("cls");
-					Displayds(l);
+					ht->Displayds(l);
 					pressanykey();
 				}
 				textcolor(11);
@@ -309,6 +310,23 @@ dangnhap:
 			else if (sl == 0) {
 
 				exit(0);
+			}
+			else if (sl == 6) {
+			textcolor(7);
+			if (l->pHead == NULL) {
+				cout << "\n\t\tDanh Sach Trong Khong Co Thong Tin De Hien Thi";
+				pressanykey();
+				system("cls");
+				textcolor(11);
+				goto level1;
+			}
+			else {
+				ht->Printcus(l);
+				pressanykey();
+				system("cls");
+				textcolor(11);
+				goto level1;
+			}
 			}
 
 			else {
@@ -319,3 +337,4 @@ dangnhap:
 	}
 	filein.close();
 }
+
