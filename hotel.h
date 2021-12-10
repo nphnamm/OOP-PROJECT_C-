@@ -22,7 +22,7 @@ class FoodCustomer;
 class Food;
 class Hotel;
 class Room;
-class RoomService;
+
 
 void pressanykey() {
 	printf("\n\nNhan phim bat ki de tiep tuc ...");
@@ -304,8 +304,24 @@ void Customer::setData()
 	cout << "\n\tNhap Dia Chi :";
 	getline(cin, custAddress);
 	rewind(stdin);
-	cout << "\n\tNhap So Dien Thoai :";
+	//yêu cầu nhập lại số điện thoại bắt đầu bằng số không không nhập chữ cái và ít hơn mươi kí tự
+	//Họ và Tên:Nguyễn Minh Thắng;
+	//Mã Sinh Viên: 6151071075
+	//Nhóm 29
+	cout << "\nNhap So Dien Thoai :";
 	getline(cin, custPhone);
+	while (custPhone[0] > '0' || custPhone.length() > 10) {
+	nl:
+		cout << "\nNhap Lai So Dien Thoai :";
+		getline(cin, custPhone);
+		for (; i < custPhone.length(); i++) {
+			if ((custPhone[i] >= 'a' && custPhone[i] <= 'z') || (custPhone[i] >= 'A' && custPhone[i] <= 'Z')) {
+				cout << "\nVui Long Nhap Lai";
+				goto nl;
+			}
+
+		}
+	}
 	cout << "\n\tNhap So Chung Minh Nhan Dan : ";
 	getline(cin, custCMND);
 	this->custID;
@@ -496,7 +512,11 @@ public:
 	void PrintBill(LIST* l);
 	void callepl(LIST* l);
 	int CheckRoom(LIST* l, int r);
+<<<<<<< HEAD
 	int DemFeedBack()
+=======
+	void searchcmnd(LIST* l);
+>>>>>>> ee21698ed6a4dd707b2f6275767f1631a6cc3c7e
 
 	Hotel(string hname, string add)
 	{
@@ -513,7 +533,46 @@ public:
 
 	}
 };
+<<<<<<< HEAD
 
+=======
+//Yêu cầu xuất những phòng có trùng chứng minh nhân dân
+//Họ Và tên :Nguyen Phan Hoai Nam
+//Mã SV: 6151071075
+//Nhóm :29
+void Hotel::searchcmnd(LIST* l) {
+search:
+	string ncmnd;
+	cout << "\nNhap so CMND De Tim Phong: ";
+	getline(cin, ncmnd);
+	int c = 0;
+	for (NODE* k = l->pHead; k != NULL; k = k->pNext)
+	{
+		if (k->data->getcustCMND() == ncmnd) {
+			system("cls");
+			cout << "\n\t\tThong Tin Khach Hang Phong " << k->data->getsp();
+			k->data->printCustomer();
+			k->data->viewTotalBill();
+
+			c = 1;
+			pressanykey();
+
+		}
+
+	}
+	if (c == 0) {
+		cout << "\nVui Long Nhap Lai ! Hoac Nhap 0 De Thoat.";
+		system("cls");
+		goto search;
+	}
+	else {
+		system("cls");
+		textcolor(11);
+		return;
+	}
+
+}
+>>>>>>> ee21698ed6a4dd707b2f6275767f1631a6cc3c7e
 Hotel::~Hotel() {
 	
 }
@@ -738,6 +797,7 @@ bk:
 	}
 
 }
+<<<<<<< HEAD
 	// yêu cầu đánh giá mứcc độ hài lòng từ 1 đến 5 và tính trung bình mức độ hài lòng của khách hàng
 	//Họ Tên:Nguyễn Hoàng Nam Kha
 	//Mã Sinh Viên:6151071007
@@ -754,6 +814,12 @@ bk:
 		}
 		return numLines;
 	}
+=======
+	// y�u c?u d�nh gi� m?c d? h�i l�ng t? 1 d?n 5 v� t�nh trung b�nh muc do hai long cua khach hang
+	//H? T�n:Nguy?n Ho�ng Nam Kha
+	//M� Sinh Vi�n:6151071007
+	//Nh�m 29
+>>>>>>> ee21698ed6a4dd707b2f6275767f1631a6cc3c7e
 	void askFeedback()
 	{
 		int f;
