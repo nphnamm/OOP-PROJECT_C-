@@ -752,10 +752,10 @@ bk:
 	}
 
 }
-	// yêu c?u dánh giá m?c d? hài lòng t? 1 d?n 5 và tính trung bình muc do hai long cua khach hang
-	//H? Tên:Nguy?n Hoàng Nam Kha
-	//Mã Sinh Viên:6151071007
-	//Nhóm 29
+	// yï¿½u c?u dï¿½nh giï¿½ m?c d? hï¿½i lï¿½ng t? 1 d?n 5 vï¿½ tï¿½nh trung bï¿½nh muc do hai long cua khach hang
+	//H? Tï¿½n:Nguy?n Hoï¿½ng Nam Kha
+	//Mï¿½ Sinh Viï¿½n:6151071007
+	//Nhï¿½m 29
 	void askFeedback()
 	{
 		int f;
