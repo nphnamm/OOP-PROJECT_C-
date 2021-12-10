@@ -295,13 +295,13 @@ void Customer::setData()
 	this->checkInTime = dt;
 
 	rewind(stdin);
-	cout << "\nNhap Ten:";
+	cout << "\n\n\tNhap Ten:";
 	getline(cin, custName);
 	rewind(stdin);
-	cout << "\nNhap Tuoi:";
+	cout << "\n\tNhap Tuoi:";
 	cin >> custAge;
 	rewind(stdin);
-	cout << "\nNhap Dia Chi :";
+	cout << "\n\tNhap Dia Chi :";
 	getline(cin, custAddress);
 	rewind(stdin);
 	//yêu cầu nhập lại số điện thoại bắt đầu bằng số không không nhập chữ cái và ít hơn mươi kí tự
@@ -322,7 +322,7 @@ void Customer::setData()
 
 		}
 	}
-	cout << "\nNhap So Chung Minh Nhan Dan : ";
+	cout << "\n\tNhap So Chung Minh Nhan Dan : ";
 	getline(cin, custCMND);
 	this->custID;
 }
