@@ -736,23 +736,56 @@ bk:
 	}
 
 }
-void Hotel::askFeedback()
-{
-	int f;
-	string cname;
-	ofstream feedback;
-	feedback.open("feedback.txt", ios::app);
-	feedback << "\t\t\tTen Khach Hang\t : ";
-	cout << "\t\t\tNhap Ten Cua ban \n\t\t\t";
-	cin >> cname;
-	feedback << cname << "\t\t\t";
-	cout << " \t\t\tCam On Thoi Gian Cua Ban! \n\t\t\t Ban Danh Gia Khach Sab Cua Chung Toi Nhu The Nao? \n\t\t\t Cham Diem Tu 1-10\n";
-	cin >> f;
-	feedback << "Feedback\t: ";
-	feedback << f << "\n";
-	feedback.close();
-	cout << "\t\t\t Cam On Danh Gia Cua Ban!" << endl;
-}
+	// yêu c?u dánh giá m?c d? hài lòng t? 1 d?n 5 và tính trung bình muc do hai long cua khach hang
+	//H? Tên:Nguy?n Hoàng Nam Kha
+	//Mã Sinh Viên:6151071007
+	//Nhóm 29
+	void askFeedback()
+	{
+		int f;
+		string cname;
+		ofstream feedback;
+		feedback.open("feedback.txt", ios::app);
+		feedback << "\t\t\tTen Khach Hang\t : ";
+		cout << "\t\t\tNhap Ten Cua ban :";
+		cin >> cname;
+		feedback << cname << "\t\t\t";
+		cout << " \t\t\tCam On Thoi Gian Cua Ban! \n\t\t\tBan Danh Gia Khach San Cua Chung Toi Nhu The Nao? \n\t\t\tCham Diem Tu 1-5\n";
+		cout << " \t\t\t";
+		cin >> f;
+		while (f > 5 || f <= 0) {
+			cout << "\n\t\t\tVui Long Nhap Lai Cham Diem Tu 1-5:\n";
+			cout << " \t\t\t";
+			cin >> f;
+		}
+		feedback << ",Feedback\t: ";
+		feedback << f << "\n";
+		feedback.close();
+		cout << "\t\t\t Cam On Danh Gia Cua Ban!" << endl;
+
+		ifstream in("FeedBack.txt");
+		string tname;
+		string name;
+		string tfd;
+		int diem;
+		int tdiem = 0;
+		int dem = DemFeedBack() - 1;
+		for (int i = 0; i < dem; i++) {
+			getline(in, tname, ':');
+
+			getline(in, name, ',');
+
+			getline(in, tfd, ':');
+			in >> diem;
+
+			tdiem = diem + tdiem;
+
+
+		}
+		cout << "\n\t\t\tDiem Danh Gia Trung Binh La:" << (float)tdiem / dem;
+		system("pause");
+		
+	}
 
 void Hotel::getCustomerData(Customer* c)
 {
