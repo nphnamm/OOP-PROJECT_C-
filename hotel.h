@@ -512,6 +512,7 @@ public:
 	void PrintBill(LIST* l);
 	void callepl(LIST* l);
 	int CheckRoom(LIST* l, int r);
+	void searchcmnd(LIST* l);
 
 	Hotel(string hname, string add)
 	{
@@ -528,6 +529,42 @@ public:
 
 	}
 };
+//Y√™u c·∫ßu xu·∫•t nh·ªØng ph√≤ng c√≥ tr√πng ch·ª©ng minh nh√¢n d√¢n
+//H·ªç V√† t√™n :Nguyen Phan Hoai Nam
+//M√£ SV: 6151071075
+//Nh√≥m :29
+void Hotel::searchcmnd(LIST* l) {
+search:
+	string ncmnd;
+	cout << "\nNhap so CMND De Tim Phong: ";
+	getline(cin, ncmnd);
+	int c = 0;
+	for (NODE* k = l->pHead; k != NULL; k = k->pNext)
+	{
+		if (k->data->getcustCMND() == ncmnd) {
+			system("cls");
+			cout << "\n\t\tThong Tin Khach Hang Phong " << k->data->getsp();
+			k->data->printCustomer();
+			k->data->viewTotalBill();
+
+			c = 1;
+			pressanykey();
+
+		}
+
+	}
+	if (c == 0) {
+		cout << "\nVui Long Nhap Lai ! Hoac Nhap 0 De Thoat.";
+		system("cls");
+		goto search;
+	}
+	else {
+		system("cls");
+		textcolor(11);
+		return;
+	}
+
+}
 Hotel::~Hotel() {
 	
 }
@@ -752,10 +789,10 @@ bk:
 	}
 
 }
-	// yÍu c?u d·nh gi· m?c d? h‡i lÚng t? 1 d?n 5 v‡ tÌnh trung bÏnh muc do hai long cua khach hang
-	//H? TÍn:Nguy?n Ho‡ng Nam Kha
-	//M„ Sinh ViÍn:6151071007
-	//NhÛm 29
+	// yÔøΩu c?u dÔøΩnh giÔøΩ m?c d? hÔøΩi lÔøΩng t? 1 d?n 5 vÔøΩ tÔøΩnh trung bÔøΩnh muc do hai long cua khach hang
+	//H? TÔøΩn:Nguy?n HoÔøΩng Nam Kha
+	//MÔøΩ Sinh ViÔøΩn:6151071007
+	//NhÔøΩm 29
 	void askFeedback()
 	{
 		int f;
