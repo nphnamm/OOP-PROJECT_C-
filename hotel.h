@@ -127,9 +127,7 @@ public:
 	Room(string roomType, int noOfBeds, double rent, int roomNo, string listRoom);
 	void setRoom();
 	Room();
-	/*void displayDetail();
-	void vacateRoom(int rno);
-	void displayAvailable(Room r[6]);*/
+	~Room();
 	int getsp() {
 		return this->noOfroom;
 	}
@@ -144,6 +142,7 @@ Room::Room(string roomType, int noOfBeds, double rent, int STT, string listRoom)
 	this->noOfroom = 0;
 
 }
+
 void Room::setRoom()
 {
 	cout << "Enter Room Type, No of beds, Rent, RoomNo\n";
@@ -156,6 +155,9 @@ void Room::setRoom()
 }
 Room::Room()
 {
+
+}
+Room::~Room() {
 
 }
 
@@ -171,8 +173,8 @@ public:
 	Dish(string stt, string dishName, double price, string dishType);
 	Dish()
 	{
-
 	}
+	~Dish();
 };
 Dish::Dish(string stt, string dishName, double price, string dishType)
 {
@@ -182,7 +184,9 @@ Dish::Dish(string stt, string dishName, double price, string dishType)
 	this->dishType = dishType;
 
 }
+Dish::~Dish(){
 
+}
 
 class Customer :public Room
 {
@@ -199,6 +203,7 @@ private:
 
 public:
 	Customer();
+	~Customer();
 	void setData();
 	virtual void printCustomer();
 	virtual float viewTotalBill() {
@@ -279,6 +284,9 @@ Customer::Customer()
 	this->custID = id++;
 
 }
+Customer::~Customer()
+{
+}
 void Customer::setData()
 {
 
@@ -335,7 +343,7 @@ public:
 	
 public:
 
-	
+	~RoomCustomer();
 	void allocateRoom(Room r1);
 	void printCustomer();
 	float viewTotalBill();
@@ -365,7 +373,9 @@ float RoomCustomer::viewTotalBill()
 	cout << "Hoa Don :: " << this->bill;
 	return bill;
 }
+RoomCustomer::~RoomCustomer() {
 
+}
 
 class FoodCustomer :public RoomCustomer
 {
@@ -374,7 +384,7 @@ public:
 	Dish d;
 public:
 	FoodCustomer();
-
+	~FoodCustomer();
 	void allocateDish(Dish d1);
 
 	float viewTotalBill();
@@ -409,6 +419,9 @@ void FoodCustomer::printCustomer()
 	cout << "Gia Mon An::" << d.price << endl;
 
 }
+FoodCustomer::~FoodCustomer() {
+
+}
 
 class Food
 {
@@ -418,7 +431,7 @@ public:
 public:
 	
 	Dish getDish(string dnam);
-	
+	~Food()
 
 };
 
@@ -435,6 +448,9 @@ Dish Food::getDish(string dnam)
 		}
 	}
 }
+Food::~Food() {
+
+}
 int CheckRoom(LIST* l, int r) {
 	int n = 0;
 	for (NODE* k = l->pHead; k != NULL; k = k->pNext)
@@ -450,6 +466,7 @@ int CheckRoom(LIST* l, int r) {
 	}
 	return n;
 }
+
 class Hotel :public FoodCustomer
 {
 private:
@@ -462,6 +479,7 @@ public:
 	Food food;
 	Room room[5];
 public:
+	~Hotel() ;
 	void setHotel(Food f, Room rs[5]);
 	Room getRoom(int rno);
 	Dish getDish(string dsh);
@@ -485,6 +503,7 @@ public:
 		this->hotelAddress = add;
 
 	}
+
 	string getacc() {
 		return acc;
 	}
@@ -493,6 +512,9 @@ public:
 
 	}
 };
+Hotel::~Hotel() {
+	
+}
 void Hotel::setHotel(Food f, Room rs[5])
 {
 	int i;
@@ -503,7 +525,7 @@ void Hotel::setHotel(Food f, Room rs[5])
 	}
 	for (i = 0; i < 8; i++)
 		this->food.dish[i] = f.dish[i];
-
+	
 }
 Room Hotel::getRoom(int rno)
 {
@@ -524,54 +546,55 @@ Dish Hotel::getDish(string dsh)
 	}
 }
 void Hotel::displayAvailble() {
-	int i;
-	const char separator = ' ';
-	const int NoWidth = 3;
-	const int RTWidth = 25;
-	const int NumbWidth = 25;
-	const int RentWidth = 20;
-	const int SPWidth = 20;
-	cout << "\n\n-------------------------------------------------------Chi Tiet Phong---------------------------------------------------\n\n";
-	cout << endl;
-
-	cout << "\n\n +----+--------------------------+--------------------------+---------------------+---------------------+";
-	cout << "\n | NO |         Loai Phong       |         So Giuong        |       Gia Tien      |     So Phong.       |";
-	cout << "\n +----+--------------------------+--------------------------+---------------------+---------------------+";
-	for (i = 0; i < 5; i++)
-	{
+		int i;
+		const char separator = ' ';
+		const int NoWidth = 3;
+		const int RTWidth = 27;
+		const int NumbWidth = 27;
+		const int RentWidth = 22;
+		const int SPWidth = 22;
+		cout << "\n\n-------------------------------------------------------Chi Tiet Phong-------------------------------------------------\n\n";
+	
+	
+		cout << "\n\n +----+----------------------------+----------------------------+-----------------------+-----------------------+";
+		cout << "\n | NO |          Loai Phong        |          So Giuong         |        Gia Tien       |      So Phong.        |";
+		cout << "\n +----+----------------------------+----------------------------+-----------------------+-----------------------+";
+		for (i = 0; i < 5; i++)
+		{
+			
+				
+				cout << "\n |" << setw(NoWidth) << setfill(separator) << room[i].STT << " |";
+				cout << setw(RTWidth) << setfill(separator) << room[i].roomType << " |";
+				cout << setw(NumbWidth) << setfill(separator) << room[i].noOfBeds << " |";
+				cout << setw(RentWidth) << setfill(separator) << room[i].rent << " |";
+				cout << setw(SPWidth) << setfill(separator) << room[i].listRoom << " |";
 		
-		
-
-			cout << "\n |" << setw(NoWidth) << setfill(separator) << room[i].STT << " |";
-			cout << setw(RTWidth) << setfill(separator) << room[i].roomType << " |";
-			cout << setw(NumbWidth) << setfill(separator) << room[i].noOfBeds << " |";
-			cout << setw(RentWidth) << setfill(separator) << room[i].rent << " |";
-			cout << setw(SPWidth) << setfill(separator) << room[i].listRoom << " |";
-		
-	}
-	cout << "\n +----+--------------------------+--------------------------+---------------------+---------------------+";
+		}
+		cout << "\n +----+----------------------------+----------------------------+-----------------------+-----------------------+";
 
 }
 void Hotel::displayMenu()
 {
 	const char separator = ' ';
-	const int NoWidth = 25;
-	const int DishWidth = 25;
-	const int PriceWidth = 25;
-	const int RTWidth = 25;
-	cout << "\n\n같같같같같같같같같같같같같같같같같같같같같같같같같같캫ENU같같같같같같같같같같같같같같같같같같같같같같같같같같같같같같같\n ";
-	cout << "\n\n +--------------------------+--------------------------+--------------------------+--------------------------+";
-	cout << "\n |                        NO|        Ten Mon An        |           Gia Tien       |        Loai Mon An       |";
-	cout << "\n +--------------------------+--------------------------+--------------------------+--------------------------+";
-	for (int i = 0; i < 8; i++)
-	{
-		cout << "\n |" << setw(NoWidth) << setfill(separator) << food.dish[i].stt << " |";
-		cout << setw(DishWidth) << setfill(separator) << food.dish[i].dishName << " |";
-		cout << setw(PriceWidth) << setfill(separator) << food.dish[i].price << " |";
-		cout << setw(RTWidth) << setfill(separator) << food.dish[i].dishType << " |";
-	}
-	cout << "\n +--------------------------+--------------------------+--------------------------+--------------------------+";
-	cout << "\n\n";
+		const int NoWidth = 25;
+		const int DishWidth = 27;
+		const int PriceWidth = 27;
+		const int RTWidth = 27;
+		cout << "\n\n같같같같같같같같같같같같같같같같같같같같같같같같같같캫ENU같같같같같같같같같같같같같같같같같같같같같같같같같같같같같같같\n ";
+		cout << "\n\n +--------------------------+----------------------------+----------------------------+----------------------------+";
+		cout << "\n |                        NO|         Ten Mon An         |           Gia Tien         |         Loai Mon An        |";
+		cout << "\n +--------------------------+----------------------------+----------------------------+----------------------------+";
+		for (int i = 0; i < 8; i++)
+		{
+			
+			cout << "\n |" << setw(NoWidth) << setfill(separator) << food.dish[i].stt << " |";
+			cout << setw(DishWidth) << setfill(separator) << food.dish[i].dishName << " |";
+			cout << setw(PriceWidth) << setfill(separator) << food.dish[i].price << " |";
+			cout << setw(RTWidth) << setfill(separator) << food.dish[i].dishType << " |";
+		}
+		cout << " \n +--------------------------+----------------------------+----------------------------+----------------------------+";
+		cout << "\n\n";
+	
 }
 int Hotel::CheckRoom(LIST* l, int r) {
 	int n = 0;

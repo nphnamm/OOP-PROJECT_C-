@@ -51,7 +51,7 @@ dangnhap:
 	while (true)
 	{
 		system("cls");
-	level1:	cout << "\t\t\t°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°\n";
+level1:	cout <<"\t\t\t°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°\n";
 		cout << "\t\t\t°\t                           \t\t\t\t°\n";
 		cout << "\t\t\t°\t\tCHUONG TRINH QUAN LY KHACH SAN \t\t\t°\n";
 		cout << "\t\t\t°\t                           \t\t\t\t°\n";
@@ -72,14 +72,15 @@ dangnhap:
 		cout << "\t\t\t°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°\n";
 		cout << "\t\t\t°\t	8.In Hoa Don             \t\t\t°\n";
 		cout << "\t\t\t°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°\n";
-		cout << "\t\t\t°\t	9.Khong Hai Long         \t\t\t°\n";
+		cout << "\t\t\t°\t	9.Khong Hai Long         \t\t\t°\n"; 
 		cout << "\t\t\t°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°\n";
 		cout << "\t\t\t°\t	10.Give FeedBack          \t\t\t°\n";
 		cout << "\t\t\t°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°\n";
 		cout << "\t\t\t°\t	0.Thoat.                 \t\t\t°\n";
 		cout << "\t\t\t°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°\n";
-		cout << "\t\t\t--------------------Nhap Lua Chon Cua Ban------------------------\n";
-		cout << "\t\t\t";
+		cout << "\t\t\t-----------------------------------------------------------------\n";
+
+		cout << "\t\t\tNhap Lua Chon Cua Ban: ";
 		cin >> sl;
 		{
 			if (sl == 1) {
