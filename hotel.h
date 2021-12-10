@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <iostream>
 #include<string>
 #include<stdlib.h>
@@ -40,7 +40,7 @@ struct LIST {
 
 
 };
-// KH?i t?o c?u trúc danh sách 
+// KH?i t?o c?u trÃºc danh sÃ¡ch 
 
 void KhoiTaoDSLK(LIST*& l) {
 	l = new LIST;
@@ -496,6 +496,7 @@ public:
 	void PrintBill(LIST* l);
 	void callepl(LIST* l);
 	int CheckRoom(LIST* l, int r);
+	int DemFeedBack()
 
 	Hotel(string hname, string add)
 	{
@@ -512,6 +513,7 @@ public:
 
 	}
 };
+
 Hotel::~Hotel() {
 	
 }
@@ -580,7 +582,7 @@ void Hotel::displayMenu()
 		const int DishWidth = 27;
 		const int PriceWidth = 27;
 		const int RTWidth = 27;
-		cout << "\n\n°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°MENU°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°\n ";
+		cout << "\n\nÂ°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°MENUÂ°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°\n ";
 		cout << "\n\n +--------------------------+----------------------------+----------------------------+----------------------------+";
 		cout << "\n |                        NO|         Ten Mon An         |           Gia Tien         |         Loai Mon An        |";
 		cout << "\n +--------------------------+----------------------------+----------------------------+----------------------------+";
@@ -736,10 +738,22 @@ bk:
 	}
 
 }
-	// yêu c?u dánh giá m?c d? hài lòng t? 1 d?n 5 và tính trung bình muc do hai long cua khach hang
-	//H? Tên:Nguy?n Hoàng Nam Kha
-	//Mã Sinh Viên:6151071007
-	//Nhóm 29
+	// yÃªu cáº§u Ä‘Ã¡nh giÃ¡ má»©cc Ä‘á»™ hÃ i lÃ²ng tá»« 1 Ä‘áº¿n 5 vÃ  tÃ­nh trung bÃ¬nh má»©c Ä‘á»™ hÃ i lÃ²ng cá»§a khÃ¡ch hÃ ng
+	//Há» TÃªn:Nguyá»…n HoÃ ng Nam Kha
+	//MÃ£ Sinh ViÃªn:6151071007
+	//NhÃ³m 29
+	int Hotel::DemFeedBack() {
+		int numLines = 0;
+		ifstream in("FeedBack.txt");
+
+		while (in.good())
+		{
+			std::string line;
+			std::getline(in, line);
+			++numLines;
+		}
+		return numLines;
+	}
 	void askFeedback()
 	{
 		int f;
