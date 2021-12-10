@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <iostream>
 #include<string>
 #include<stdlib.h>
@@ -22,7 +22,7 @@ class FoodCustomer;
 class Food;
 class Hotel;
 class Room;
-class RoomService;
+
 
 void pressanykey() {
 	printf("\n\nNhan phim bat ki de tiep tuc ...");
@@ -40,7 +40,7 @@ struct LIST {
 
 
 };
-// KH?i t?o c?u trúc danh sách 
+// KH?i t?o c?u trÃºc danh sÃ¡ch 
 
 void KhoiTaoDSLK(LIST*& l) {
 	l = new LIST;
@@ -304,8 +304,24 @@ void Customer::setData()
 	cout << "\n\tNhap Dia Chi :";
 	getline(cin, custAddress);
 	rewind(stdin);
-	cout << "\n\tNhap So Dien Thoai :";
+	//yÃªu cáº§u nháº­p láº¡i sá»‘ Ä‘iá»‡n thoáº¡i báº¯t Ä‘áº§u báº±ng sá»‘ khÃ´ng khÃ´ng nháº­p chá»¯ cÃ¡i vÃ  Ã­t hÆ¡n mÆ°Æ¡i kÃ­ tá»±
+	//Há» vÃ  TÃªn:Nguyá»…n Minh Tháº¯ng;
+	//MÃ£ Sinh ViÃªn: 6151071075
+	//NhÃ³m 29
+	cout << "\nNhap So Dien Thoai :";
 	getline(cin, custPhone);
+	while (custPhone[0] > '0' || custPhone.length() > 10) {
+	nl:
+		cout << "\nNhap Lai So Dien Thoai :";
+		getline(cin, custPhone);
+		for (; i < custPhone.length(); i++) {
+			if ((custPhone[i] >= 'a' && custPhone[i] <= 'z') || (custPhone[i] >= 'A' && custPhone[i] <= 'Z')) {
+				cout << "\nVui Long Nhap Lai";
+				goto nl;
+			}
+
+		}
+	}
 	cout << "\n\tNhap So Chung Minh Nhan Dan : ";
 	getline(cin, custCMND);
 	this->custID;
@@ -580,7 +596,7 @@ void Hotel::displayMenu()
 		const int DishWidth = 27;
 		const int PriceWidth = 27;
 		const int RTWidth = 27;
-		cout << "\n\n°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°MENU°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°\n ";
+		cout << "\n\nÂ°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°MENUÂ°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°\n ";
 		cout << "\n\n +--------------------------+----------------------------+----------------------------+----------------------------+";
 		cout << "\n |                        NO|         Ten Mon An         |           Gia Tien         |         Loai Mon An        |";
 		cout << "\n +--------------------------+----------------------------+----------------------------+----------------------------+";
@@ -736,23 +752,56 @@ bk:
 	}
 
 }
-void Hotel::askFeedback()
-{
-	int f;
-	string cname;
-	ofstream feedback;
-	feedback.open("feedback.txt", ios::app);
-	feedback << "\t\t\tTen Khach Hang\t : ";
-	cout << "\t\t\tNhap Ten Cua ban \n\t\t\t";
-	cin >> cname;
-	feedback << cname << "\t\t\t";
-	cout << " \t\t\tCam On Thoi Gian Cua Ban! \n\t\t\t Ban Danh Gia Khach Sab Cua Chung Toi Nhu The Nao? \n\t\t\t Cham Diem Tu 1-10\n";
-	cin >> f;
-	feedback << "Feedback\t: ";
-	feedback << f << "\n";
-	feedback.close();
-	cout << "\t\t\t Cam On Danh Gia Cua Ban!" << endl;
-}
+	// yêu c?u dánh giá m?c d? hài lòng t? 1 d?n 5 và tính trung bình muc do hai long cua khach hang
+	//H? Tên:Nguy?n Hoàng Nam Kha
+	//Mã Sinh Viên:6151071007
+	//Nhóm 29
+	void askFeedback()
+	{
+		int f;
+		string cname;
+		ofstream feedback;
+		feedback.open("feedback.txt", ios::app);
+		feedback << "\t\t\tTen Khach Hang\t : ";
+		cout << "\t\t\tNhap Ten Cua ban :";
+		cin >> cname;
+		feedback << cname << "\t\t\t";
+		cout << " \t\t\tCam On Thoi Gian Cua Ban! \n\t\t\tBan Danh Gia Khach San Cua Chung Toi Nhu The Nao? \n\t\t\tCham Diem Tu 1-5\n";
+		cout << " \t\t\t";
+		cin >> f;
+		while (f > 5 || f <= 0) {
+			cout << "\n\t\t\tVui Long Nhap Lai Cham Diem Tu 1-5:\n";
+			cout << " \t\t\t";
+			cin >> f;
+		}
+		feedback << ",Feedback\t: ";
+		feedback << f << "\n";
+		feedback.close();
+		cout << "\t\t\t Cam On Danh Gia Cua Ban!" << endl;
+
+		ifstream in("FeedBack.txt");
+		string tname;
+		string name;
+		string tfd;
+		int diem;
+		int tdiem = 0;
+		int dem = DemFeedBack() - 1;
+		for (int i = 0; i < dem; i++) {
+			getline(in, tname, ':');
+
+			getline(in, name, ',');
+
+			getline(in, tfd, ':');
+			in >> diem;
+
+			tdiem = diem + tdiem;
+
+
+		}
+		cout << "\n\t\t\tDiem Danh Gia Trung Binh La:" << (float)tdiem / dem;
+		system("pause");
+		
+	}
 
 void Hotel::getCustomerData(Customer* c)
 {
