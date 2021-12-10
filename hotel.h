@@ -815,10 +815,7 @@ bk:
 		return numLines;
 	}
 =======
-	// y�u c?u d�nh gi� m?c d? h�i l�ng t? 1 d?n 5 v� t�nh trung b�nh muc do hai long cua khach hang
-	//H? T�n:Nguy?n Ho�ng Nam Kha
-	//M� Sinh Vi�n:6151071007
-	//Nh�m 29
+
 >>>>>>> ee21698ed6a4dd707b2f6275767f1631a6cc3c7e
 	void askFeedback()
 	{
