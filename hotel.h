@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <iostream>
 #include<string>
 #include<stdlib.h>
@@ -22,7 +22,7 @@ class FoodCustomer;
 class Food;
 class Hotel;
 class Room;
-class RoomService;
+
 
 void pressanykey() {
 	printf("\n\nNhan phim bat ki de tiep tuc ...");
@@ -40,7 +40,7 @@ struct LIST {
 
 
 };
-// KH?i t?o c?u trúc danh sách 
+// KH?i t?o c?u trÃºc danh sÃ¡ch 
 
 void KhoiTaoDSLK(LIST*& l) {
 	l = new LIST;
@@ -295,18 +295,34 @@ void Customer::setData()
 	this->checkInTime = dt;
 
 	rewind(stdin);
-	cout << "\n\n\tNhap Ten:";
+	cout << "\nNhap Ten:";
 	getline(cin, custName);
 	rewind(stdin);
-	cout << "\n\tNhap Tuoi:";
+	cout << "\nNhap Tuoi:";
 	cin >> custAge;
 	rewind(stdin);
-	cout << "\n\tNhap Dia Chi :";
+	cout << "\nNhap Dia Chi :";
 	getline(cin, custAddress);
 	rewind(stdin);
-	cout << "\n\tNhap So Dien Thoai :";
+	//yÃªu cáº§u nháº­p láº¡i sá»‘ Ä‘iá»‡n thoáº¡i báº¯t Ä‘áº§u báº±ng sá»‘ khÃ´ng khÃ´ng nháº­p chá»¯ cÃ¡i vÃ  Ã­t hÆ¡n mÆ°Æ¡i kÃ­ tá»±
+	//Há» vÃ  TÃªn:Nguyá»…n Minh Tháº¯ng;
+	//MÃ£ Sinh ViÃªn: 6151071075
+	//NhÃ³m 29
+	cout << "\nNhap So Dien Thoai :";
 	getline(cin, custPhone);
-	cout << "\n\tNhap So Chung Minh Nhan Dan : ";
+	while (custPhone[0] > '0' || custPhone.length() > 10) {
+	nl:
+		cout << "\nNhap Lai So Dien Thoai :";
+		getline(cin, custPhone);
+		for (; i < custPhone.length(); i++) {
+			if ((custPhone[i] >= 'a' && custPhone[i] <= 'z') || (custPhone[i] >= 'A' && custPhone[i] <= 'Z')) {
+				cout << "\nVui Long Nhap Lai";
+				goto nl;
+			}
+
+		}
+	}
+	cout << "\nNhap So Chung Minh Nhan Dan : ";
 	getline(cin, custCMND);
 	this->custID;
 }
@@ -580,7 +596,7 @@ void Hotel::displayMenu()
 		const int DishWidth = 27;
 		const int PriceWidth = 27;
 		const int RTWidth = 27;
-		cout << "\n\n°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°MENU°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°\n ";
+		cout << "\n\nÂ°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°MENUÂ°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°\n ";
 		cout << "\n\n +--------------------------+----------------------------+----------------------------+----------------------------+";
 		cout << "\n |                        NO|         Ten Mon An         |           Gia Tien         |         Loai Mon An        |";
 		cout << "\n +--------------------------+----------------------------+----------------------------+----------------------------+";
